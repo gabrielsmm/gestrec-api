@@ -33,9 +33,8 @@ public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
 
     @Override
     public TipoRecurso save(TipoRecurso tipoRecurso) {
-        TipoRecursoEntity entity = toEntity(tipoRecurso);
         try {
-            TipoRecursoEntity savedEntity = repo.save(entity);
+            TipoRecursoEntity savedEntity = repo.save(toEntity(tipoRecurso));
             return toDomain(savedEntity);
         } catch (DataIntegrityViolationException ex) {
             throw new EntidadeDuplicadaException("Nome já existe: " + tipoRecurso.getNome());
@@ -44,14 +43,12 @@ public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
 
     @Override
     public Optional<TipoRecurso> findById(Long id) {
-        Optional<TipoRecursoEntity> entityOpt = repo.findById(id);
-        return entityOpt.map(this::toDomain);
+        return repo.findById(id).map(this::toDomain);
     }
 
     @Override
     public List<TipoRecurso> findAll() {
-        List<TipoRecursoEntity> entities = repo.findAll();
-        return entities.stream().map(this::toDomain).toList();
+        return repo.findAll().stream().map(this::toDomain).toList();
     }
 
     @Override

@@ -20,25 +20,26 @@ import java.util.stream.Collectors;
 public class TipoRecursoController {
 
     private final TipoRecursoUseCase useCase;
+    private final TipoRecursoMapper mapper;
 
     @PostMapping
     public ResponseEntity<TipoRecursoResponse> create(@Valid @RequestBody TipoRecursoRequest req) {
-        TipoRecurso domain = TipoRecursoMapper.toDomain(req);
+        TipoRecurso domain = mapper.toDomain(req);
         TipoRecurso created = useCase.create(domain);
-        TipoRecursoResponse resp = TipoRecursoMapper.toResponse(created);
+        TipoRecursoResponse resp = mapper.toResponse(created);
         return ResponseEntity.created(URI.create("/api/tipos-recurso/" + resp.getId())).body(resp);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TipoRecursoResponse> getById(@PathVariable Long id) {
         TipoRecurso t = useCase.findById(id);
-        return ResponseEntity.ok(TipoRecursoMapper.toResponse(t));
+        return ResponseEntity.ok(mapper.toResponse(t));
     }
 
     @GetMapping
     public ResponseEntity<List<TipoRecursoResponse>> listAll() {
         List<TipoRecursoResponse> list = useCase.findAll().stream()
-                .map(TipoRecursoMapper::toResponse)
+                .map(mapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }
@@ -47,7 +48,7 @@ public class TipoRecursoController {
     public ResponseEntity<TipoRecursoResponse> update(@PathVariable Long id, @Valid @RequestBody TipoRecursoRequest req) {
         TipoRecurso updatedDomain = new TipoRecurso(id, req.getNome(), req.getDescricao());
         TipoRecurso saved = useCase.update(id, updatedDomain);
-        return ResponseEntity.ok(TipoRecursoMapper.toResponse(saved));
+        return ResponseEntity.ok(mapper.toResponse(saved));
     }
 
     @DeleteMapping("/{id}")

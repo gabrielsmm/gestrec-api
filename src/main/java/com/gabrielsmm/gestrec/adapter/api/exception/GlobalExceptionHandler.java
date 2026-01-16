@@ -1,6 +1,7 @@
 package com.gabrielsmm.gestrec.adapter.api.exception;
 
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeInvalidaException;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -45,6 +46,19 @@ public class GlobalExceptionHandler {
                 Collections.emptyMap()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(EntidadeInvalidaException.class)
+    public ResponseEntity<ErrorResponse> handleEntidadeInvalida(EntidadeInvalidaException ex, HttpServletRequest req) {
+        ErrorResponse body = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Entidade inválida",
+                ex.getMessage(),
+                req.getRequestURI(),
+                Collections.emptyMap()
+        );
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
