@@ -3,6 +3,7 @@ package com.gabrielsmm.gestrec.adapter.api.exception;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeInvalidaException;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
+import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -54,6 +55,19 @@ public class GlobalExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Entidade inválida",
+                ex.getMessage(),
+                req.getRequestURI(),
+                Collections.emptyMap()
+        );
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(RegraNegocioException.class)
+    public ResponseEntity<ErrorResponse> handleRegraNegocio(RegraNegocioException ex, HttpServletRequest req) {
+        ErrorResponse body = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Regra de negócio",
                 ex.getMessage(),
                 req.getRequestURI(),
                 Collections.emptyMap()
