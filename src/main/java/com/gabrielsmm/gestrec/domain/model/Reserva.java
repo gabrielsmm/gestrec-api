@@ -3,46 +3,62 @@ package com.gabrielsmm.gestrec.domain.model;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeInvalidaException;
 import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-@RequiredArgsConstructor
 public class Reserva {
 
-    private final Long id;
-    private final Recurso recurso;
-    private final LocalDateTime dataHoraInicio;
-    private final LocalDateTime dataHoraFim;
-    private final ReservaStatus status;
+    private Long id;
+    private Recurso recurso;
+    private LocalDateTime dataHoraInicio;
+    private LocalDateTime dataHoraFim;
+    private ReservaStatus status;
 
-    public Reserva comId(Long id) {
-        return new Reserva(id, this.recurso, this.dataHoraInicio, this.dataHoraFim, this.status);
+    public Reserva(
+            Recurso recurso,
+            LocalDateTime dataHoraInicio,
+            LocalDateTime dataHoraFim
+    ) {
+        this.recurso = recurso;
+        this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
+        this.status = ReservaStatus.ATIVA;
     }
 
-    public Reserva comRecurso(Recurso recurso) {
-        return new Reserva(this.id, recurso, this.dataHoraInicio, this.dataHoraFim, this.status);
+    public Reserva(
+            Long id,
+            Recurso recurso,
+            LocalDateTime dataHoraInicio,
+            LocalDateTime dataHoraFim,
+            ReservaStatus status
+    ) {
+        this.id = id;
+        this.recurso = recurso;
+        this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
+        this.status = status;
     }
 
-    public Reserva comDataHoraInicio(LocalDateTime dataHoraInicio) {
-        return new Reserva(this.id, this.recurso, dataHoraInicio, this.dataHoraFim, this.status);
+    public void atualizarPeriodo(LocalDateTime inicio, LocalDateTime fim) {
+        this.dataHoraInicio = inicio;
+        this.dataHoraFim = fim;
     }
 
-    public Reserva comDataHoraFim(LocalDateTime dataHoraFim) {
-        return new Reserva(this.id, this.recurso, this.dataHoraInicio, dataHoraFim, this.status);
+    public void definirRecurso(Recurso recurso) {
+        this.recurso = recurso;
     }
 
-    public Reserva comStatus(ReservaStatus status) {
-        return new Reserva(this.id, this.recurso, this.dataHoraInicio, this.dataHoraFim, status);
+    public void definirStatus(ReservaStatus status) {
+        this.status = status;
     }
 
-    public Reserva cancelar() {
+    public void cancelar() {
         if (this.status == ReservaStatus.CANCELADA) {
             throw new RegraNegocioException("Reserva já está cancelada");
         }
-        return comStatus(ReservaStatus.CANCELADA);
+        this.status = ReservaStatus.CANCELADA;
     }
 
     public boolean isAtiva() {
@@ -50,26 +66,25 @@ public class Reserva {
     }
 
     public void validar() {
-        if (this.recurso == null) {
+        if (recurso == null) {
             throw new EntidadeInvalidaException("Recurso é obrigatório");
         }
-        if (!this.recurso.isAtivo()) {
-            throw new EntidadeInvalidaException("Recurso inativo não pode ser reservado");
+        if (!recurso.isAtivo()) {
+            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
         }
-        if (this.dataHoraInicio == null) {
+        if (dataHoraInicio == null) {
             throw new EntidadeInvalidaException("Data/hora de início é obrigatória");
         }
-        if (this.dataHoraFim == null) {
+        if (dataHoraFim == null) {
             throw new EntidadeInvalidaException("Data/hora de fim é obrigatória");
         }
-        if (!this.dataHoraInicio.isBefore(this.dataHoraFim)) {
-            throw new EntidadeInvalidaException("Data/hora de início deve ser anterior à data/hora de fim");
+        if (!dataHoraInicio.isBefore(dataHoraFim)) {
+            throw new RegraNegocioException("Data/hora de início deve ser anterior à data/hora de fim");
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reserva reserva = (Reserva) o;
         return Objects.equals(id, reserva.id);
@@ -77,7 +92,8 @@ public class Reserva {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hashCode(id);
     }
 
 }
+

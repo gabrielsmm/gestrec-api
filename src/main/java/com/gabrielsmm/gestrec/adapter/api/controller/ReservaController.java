@@ -24,10 +24,18 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req) {
-        Reserva domain = mapper.toDomain(req);
-        Reserva criada = useCase.criar(domain);
-        ReservaResponse resp = mapper.toResponse(criada);
-        return ResponseEntity.created(URI.create("/api/reservas/" + resp.id())).body(resp);
+        Reserva dados = mapper.toDomain(req);
+        Reserva criada = useCase.criar(dados);
+        return ResponseEntity
+                .created(URI.create("/api/reservas/" + criada.getId()))
+                .body(mapper.toResponse(criada));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id, @Valid @RequestBody ReservaRequest req) {
+        Reserva dadosAtualizados = mapper.toDomain(req);
+        Reserva salva = useCase.atualizar(id, dadosAtualizados);
+        return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
     @GetMapping("/{id}")
@@ -42,13 +50,6 @@ public class ReservaController {
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(lista);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id, @Valid @RequestBody ReservaRequest req) {
-        Reserva atualizada = mapper.applyToDomain(req, null).comId(id);
-        Reserva salva = useCase.atualizar(id, atualizada);
-        return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
     @DeleteMapping("/{id}")

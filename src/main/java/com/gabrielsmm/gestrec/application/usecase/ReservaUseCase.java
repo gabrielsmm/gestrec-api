@@ -21,39 +21,64 @@ public class ReservaUseCase {
     private final RecursoRepository recursoRepository;
 
     @Transactional
-    public Reserva criar(Reserva novo) {
-        Long recursoId = novo.getRecurso() != null ? novo.getRecurso().getId() : null;
+    public Reserva criar(Reserva nova) {
+        Long recursoId = nova.getRecurso().getId();
         Recurso recurso = recursoRepository.findById(recursoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + recursoId));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
 
-        // checar conflito de horário
-        if (repository.existeConflitoDeHorario(recursoId, novo.getDataHoraInicio(), novo.getDataHoraFim(), null, ReservaStatus.ATIVA)) {
+        if (!recurso.isAtivo()) {
+            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        }
+
+        if (repository.existeConflitoDeHorario(
+                recursoId,
+                nova.getDataHoraInicio(),
+                nova.getDataHoraFim(),
+                null,
+                ReservaStatus.ATIVA)) {
             throw new RegraNegocioException("Conflito de horário para o recurso");
         }
 
-        Reserva reservaParaSalvar = novo.comRecurso(recurso);
-        reservaParaSalvar.validar();
-        return repository.salvar(reservaParaSalvar);
+        nova.definirRecurso(recurso);
+        nova.definirStatus(ReservaStatus.ATIVA);
+
+        nova.validar();
+
+        return repository.salvar(nova);
     }
 
     @Transactional
-    public Reserva atualizar(Long id, Reserva atualizado) {
-        if (!repository.existePorId(id)) {
-            throw new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id);
+    public Reserva atualizar(Long id, Reserva dadosAtualizados) {
+        Reserva existente = repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada: " + id));
+
+        Long recursoId = dadosAtualizados.getRecurso().getId();
+        Recurso recurso = recursoRepository.findById(recursoId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
+
+        if (!recurso.isAtivo()) {
+            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
         }
 
-        Long recursoId = atualizado.getRecurso() != null ? atualizado.getRecurso().getId() : null;
-        Recurso recurso = recursoRepository.findById(recursoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + recursoId));
-
-        // checar conflito ignorando a própria reserva
-        if (repository.existeConflitoDeHorario(recursoId, atualizado.getDataHoraInicio(), atualizado.getDataHoraFim(), id, ReservaStatus.ATIVA)) {
+        if (repository.existeConflitoDeHorario(
+                recursoId,
+                dadosAtualizados.getDataHoraInicio(),
+                dadosAtualizados.getDataHoraFim(),
+                id,
+                ReservaStatus.ATIVA)) {
             throw new RegraNegocioException("Conflito de horário para o recurso");
         }
 
-        Reserva reservaParaAtualizar = atualizado.comId(id).comRecurso(recurso);
-        reservaParaAtualizar.validar();
-        return repository.salvar(reservaParaAtualizar);
+        existente.atualizarPeriodo(
+                dadosAtualizados.getDataHoraInicio(),
+                dadosAtualizados.getDataHoraFim()
+        );
+
+        existente.definirRecurso(recurso);
+
+        existente.validar();
+
+        return repository.salvar(existente);
     }
 
     @Transactional(readOnly = true)
@@ -79,8 +104,8 @@ public class ReservaUseCase {
     public Reserva cancelar(Long id) {
         Reserva existente = repository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
-        Reserva cancelada = existente.cancelar();
-        return repository.salvar(cancelada);
+        existente.cancelar();
+        return repository.salvar(existente);
     }
 
 }
