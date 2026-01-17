@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.application.usecase;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.domain.port.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.domain.repository.TipoRecursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
