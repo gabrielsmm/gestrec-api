@@ -13,18 +13,19 @@ public interface ReservaMapper {
     default Reserva toDomain(ReservaRequest req) {
         if (req == null) return null;
         Recurso recurso = toRecurso(req.recursoId());
-        ReservaStatus status = ReservaStatus.ATIVA;
-        return new Reserva(null, recurso, req.dataHoraInicio(), req.dataHoraFim(), status);
+        return new Reserva(recurso, req.dataHoraInicio(), req.dataHoraFim());
     }
 
-    default Reserva applyToDomain(ReservaRequest req, Reserva existing) {
-        if (existing == null) return toDomain(req);
-        Recurso recurso = req.recursoId() != null ? toRecurso(req.recursoId()) : existing.getRecurso();
-        LocalDateTime inicio = req.dataHoraInicio() != null ? req.dataHoraInicio() : existing.getDataHoraInicio();
-        LocalDateTime fim = req.dataHoraFim() != null ? req.dataHoraFim() : existing.getDataHoraFim();
-        ReservaStatus status = existing.getStatus();
-        return new Reserva(existing.getId(), recurso, inicio, fim, status);
-    }
+//    default Reserva applyToDomain(ReservaRequest req, Reserva existing) {
+//        if (existing == null) return toDomain(req);
+//
+//        Recurso recurso = req.recursoId() != null ? toRecurso(req.recursoId()) : existing.getRecurso();
+//        LocalDateTime inicio = req.dataHoraInicio() != null ? req.dataHoraInicio() : existing.getDataHoraInicio();
+//        LocalDateTime fim = req.dataHoraFim() != null ? req.dataHoraFim() : existing.getDataHoraFim();
+//        ReservaStatus status = existing.getStatus();
+//
+//        return new Reserva(existing.getId(), recurso, inicio, fim, status);
+//    }
 
     ReservaResponse toResponse(Reserva domain);
 

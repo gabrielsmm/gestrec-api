@@ -10,77 +10,56 @@ import java.util.Objects;
 @Getter
 public class Reserva {
 
-    private Long id;
+    private final Long id;
     private Recurso recurso;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
     private ReservaStatus status;
 
-    public Reserva(
-            Recurso recurso,
-            LocalDateTime dataHoraInicio,
-            LocalDateTime dataHoraFim
-    ) {
-        this.recurso = recurso;
-        this.dataHoraInicio = dataHoraInicio;
-        this.dataHoraFim = dataHoraFim;
-        this.status = ReservaStatus.ATIVA;
+    // Construtor para novas reservas (sem id)
+    public Reserva(Recurso recurso, LocalDateTime inicio, LocalDateTime fim) {
+        this(null, recurso, inicio, fim, ReservaStatus.ATIVA);
     }
 
-    public Reserva(
-            Long id,
-            Recurso recurso,
-            LocalDateTime dataHoraInicio,
-            LocalDateTime dataHoraFim,
-            ReservaStatus status
-    ) {
+    // Construtor para reconstrução (com id)
+    public Reserva(Long id, Recurso recurso, LocalDateTime inicio, LocalDateTime fim, ReservaStatus status) {
+        if (recurso == null) throw new EntidadeInvalidaException("Recurso é obrigatório");
+        if (!recurso.isAtivo()) throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        if (inicio == null || fim == null) throw new EntidadeInvalidaException("Datas obrigatórias");
+        if (!inicio.isBefore(fim)) throw new RegraNegocioException("Início deve ser antes do fim");
+
         this.id = id;
         this.recurso = recurso;
-        this.dataHoraInicio = dataHoraInicio;
-        this.dataHoraFim = dataHoraFim;
-        this.status = status;
-    }
-
-    public void atualizarPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         this.dataHoraInicio = inicio;
         this.dataHoraFim = fim;
+        this.status = status != null ? status : ReservaStatus.ATIVA;
     }
 
-    public void definirRecurso(Recurso recurso) {
-        this.recurso = recurso;
+    public void reagendar(LocalDateTime novoInicio, LocalDateTime novoFim) {
+        if (!novoInicio.isBefore(novoFim)) throw new RegraNegocioException("Início deve ser antes do fim");
+        this.dataHoraInicio = novoInicio;
+        this.dataHoraFim = novoFim;
     }
 
-    public void definirStatus(ReservaStatus status) {
-        this.status = status;
+    public void alterarRecurso(Recurso novoRecurso) {
+        if (novoRecurso == null) {
+            throw new EntidadeInvalidaException("Recurso é obrigatório");
+        }
+        if (!novoRecurso.isAtivo()) {
+            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        }
+        this.recurso = novoRecurso;
     }
 
     public void cancelar() {
         if (this.status == ReservaStatus.CANCELADA) {
-            throw new RegraNegocioException("Reserva já está cancelada");
+            throw new RegraNegocioException("Reserva já cancelada");
         }
         this.status = ReservaStatus.CANCELADA;
     }
 
     public boolean isAtiva() {
         return this.status == ReservaStatus.ATIVA;
-    }
-
-    public void validar() {
-        if (recurso == null) {
-            throw new EntidadeInvalidaException("Recurso é obrigatório");
-        }
-        if (!recurso.isAtivo()) {
-            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
-        }
-        if (dataHoraInicio == null) {
-            throw new EntidadeInvalidaException("Data/hora de início é obrigatória");
-        }
-        if (dataHoraFim == null) {
-            throw new EntidadeInvalidaException("Data/hora de fim é obrigatória");
-        }
-        if (!dataHoraInicio.isBefore(dataHoraFim)) {
-            throw new RegraNegocioException("Data/hora de início deve ser anterior à data/hora de fim");
-        }
     }
 
     @Override
@@ -96,4 +75,3 @@ public class Reserva {
     }
 
 }
-

@@ -26,10 +26,6 @@ public class ReservaUseCase {
         Recurso recurso = recursoRepository.findById(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
 
-        if (!recurso.isAtivo()) {
-            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
-        }
-
         if (repository.existeConflitoDeHorario(
                 recursoId,
                 nova.getDataHoraInicio(),
@@ -39,12 +35,9 @@ public class ReservaUseCase {
             throw new RegraNegocioException("Conflito de horário para o recurso");
         }
 
-        nova.definirRecurso(recurso);
-        nova.definirStatus(ReservaStatus.ATIVA);
+        Reserva reserva = new Reserva(recurso, nova.getDataHoraInicio(), nova.getDataHoraFim());
 
-        nova.validar();
-
-        return repository.salvar(nova);
+        return repository.salvar(reserva);
     }
 
     @Transactional
@@ -56,10 +49,6 @@ public class ReservaUseCase {
         Recurso recurso = recursoRepository.findById(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
 
-        if (!recurso.isAtivo()) {
-            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
-        }
-
         if (repository.existeConflitoDeHorario(
                 recursoId,
                 dadosAtualizados.getDataHoraInicio(),
@@ -69,14 +58,8 @@ public class ReservaUseCase {
             throw new RegraNegocioException("Conflito de horário para o recurso");
         }
 
-        existente.atualizarPeriodo(
-                dadosAtualizados.getDataHoraInicio(),
-                dadosAtualizados.getDataHoraFim()
-        );
-
-        existente.definirRecurso(recurso);
-
-        existente.validar();
+        existente.reagendar(dadosAtualizados.getDataHoraInicio(), dadosAtualizados.getDataHoraFim());
+        existente.alterarRecurso(recurso);
 
         return repository.salvar(existente);
     }
@@ -103,7 +86,7 @@ public class ReservaUseCase {
     @Transactional
     public Reserva cancelar(Long id) {
         Reserva existente = repository.buscarPorId(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada: " + id));
         existente.cancelar();
         return repository.salvar(existente);
     }
