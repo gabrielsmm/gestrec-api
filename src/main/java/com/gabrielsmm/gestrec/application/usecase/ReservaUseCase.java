@@ -23,7 +23,7 @@ public class ReservaUseCase {
     @Transactional
     public Reserva criar(Reserva nova) {
         Long recursoId = nova.getRecurso().getId();
-        Recurso recurso = recursoRepository.findById(recursoId)
+        Recurso recurso = recursoRepository.buscarPorId(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
 
         if (repository.existeConflitoDeHorario(
@@ -46,7 +46,7 @@ public class ReservaUseCase {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada: " + id));
 
         Long recursoId = dadosAtualizados.getRecurso().getId();
-        Recurso recurso = recursoRepository.findById(recursoId)
+        Recurso recurso = recursoRepository.buscarPorId(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
 
         if (repository.existeConflitoDeHorario(

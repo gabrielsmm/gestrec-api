@@ -23,37 +23,38 @@ public class RecursoController {
     private final RecursoMapper mapper;
 
     @PostMapping
-    public ResponseEntity<RecursoResponse> create(@Valid @RequestBody RecursoRequest req) {
-        Recurso domain = mapper.toDomain(req);
-        Recurso created = useCase.create(domain);
-        RecursoResponse resp = mapper.toResponse(created);
-        return ResponseEntity.created(URI.create("/api/recursos/" + resp.getId())).body(resp);
+    public ResponseEntity<RecursoResponse> criar(@Valid @RequestBody RecursoRequest req) {
+        Recurso dados = mapper.toDomain(req);
+        Recurso criado = useCase.criar(dados);
+        return ResponseEntity
+                .created(URI.create("/api/recursos/" + criado.getId()))
+                .body(mapper.toResponse(criado));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RecursoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody RecursoRequest req) {
+        Recurso dadosAtualizados = mapper.toDomain(req);
+        Recurso salvo = useCase.atualizar(id, dadosAtualizados);
+        return ResponseEntity.ok(mapper.toResponse(salvo));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecursoResponse> getById(@PathVariable Long id) {
-        Recurso r = useCase.findById(id);
+    public ResponseEntity<RecursoResponse> buscarPorId(@PathVariable Long id) {
+        Recurso r = useCase.buscarPorId(id);
         return ResponseEntity.ok(mapper.toResponse(r));
     }
 
     @GetMapping
-    public ResponseEntity<List<RecursoResponse>> listAll() {
-        List<RecursoResponse> list = useCase.findAll().stream()
+    public ResponseEntity<List<RecursoResponse>> buscarTodos() {
+        List<RecursoResponse> list = useCase.buscarTodos().stream()
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RecursoResponse> update(@PathVariable Long id, @Valid @RequestBody RecursoRequest req) {
-        Recurso toUpdate = mapper.toDomain(req).withId(id);
-        Recurso saved = useCase.update(id, toUpdate);
-        return ResponseEntity.ok(mapper.toResponse(saved));
-    }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        useCase.delete(id);
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        useCase.excluir(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -24,17 +24,18 @@ public class TipoRecursoController {
 
     @PostMapping
     public ResponseEntity<TipoRecursoResponse> criar(@Valid @RequestBody TipoRecursoRequest req) {
-        TipoRecurso domain = mapper.toDomain(req);
-        TipoRecurso created = useCase.criar(domain);
-        TipoRecursoResponse resp = mapper.toResponse(created);
-        return ResponseEntity.created(URI.create("/api/tipos-recurso/" + resp.getId())).body(resp);
+        TipoRecurso dados = mapper.toDomain(req);
+        TipoRecurso criado = useCase.criar(dados);
+        return ResponseEntity
+                .created(URI.create("/api/tipos-recurso/" + criado.getId()))
+                .body(mapper.toResponse(criado));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TipoRecursoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody TipoRecursoRequest req) {
-        TipoRecurso updatedDomain = new TipoRecurso(id, req.getNome(), req.getDescricao());
-        TipoRecurso saved = useCase.atualizar(id, updatedDomain);
-        return ResponseEntity.ok(mapper.toResponse(saved));
+        TipoRecurso dadosAtualizados = mapper.toDomain(req);
+        TipoRecurso salvo = useCase.atualizar(id, dadosAtualizados);
+        return ResponseEntity.ok(mapper.toResponse(salvo));
     }
 
     @GetMapping("/{id}")

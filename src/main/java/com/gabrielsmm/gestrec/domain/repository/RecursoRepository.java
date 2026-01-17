@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface RecursoRepository {
 
-    Recurso save(Recurso recurso);
-    Optional<Recurso> findById(Long id);
-    List<Recurso> findAll();
-    void deleteById(Long id);
-    boolean existsById(Long id);
-    boolean existsByNomeIgnoreCase(String nome);
-    boolean existsByNomeIgnoreCaseAndIdNot(String nome, Long id);
+    Recurso salvar(Recurso recurso);
+    Optional<Recurso> buscarPorId(Long id);
+    List<Recurso> buscarTodos();
+    void excluirPorId(Long id);
+    boolean existePorId(Long id);
+    boolean existePorNome(String nome);
+    boolean existePorNomeIgnorandoId(String nome, Long id);
 
 }

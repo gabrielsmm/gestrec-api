@@ -16,7 +16,7 @@ public interface ReservaMapper {
     ReservaResponse toResponse(Reserva domain);
 
     default Recurso toRecurso(Long id) {
-        return id != null ? new Recurso(id, null, null, true, null) : null;
+        return id != null ? Recurso.apenasComId(id) : null;
     }
 
 }

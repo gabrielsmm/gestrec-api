@@ -20,56 +20,56 @@ public class RecursoUseCase {
     private final TipoRecursoRepository tipoRepository;
 
     @Transactional
-    public Recurso create(Recurso novo) {
-        novo.validate();
-        Long tipoId = novo.getTipoRecurso() != null ? novo.getTipoRecurso().getId() : null;
+    public Recurso criar(Recurso novo) {
+        Long tipoId =  novo.getTipoRecurso().getId();
         TipoRecurso tipo = tipoRepository.buscarPorId(tipoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + tipoId));
 
-        if (repository.existsByNomeIgnoreCase(novo.getNome())) {
+        if (repository.existePorNome(novo.getNome())) {
             throw new EntidadeDuplicadaException("Nome já existe: " + novo.getNome());
         }
 
-        Recurso toSave = novo.withTipoRecurso(tipo);
-        return repository.save(toSave);
+        Recurso recurso = new Recurso(novo.getNome(), novo.getLocalizacao(), novo.isAtivo(), tipo);
+        return repository.salvar(recurso);
     }
 
     @Transactional
-    public Recurso update(Long id, Recurso atualizado) {
-        if (!repository.existsById(id)) {
-            throw new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id);
-        }
-        atualizado.validate();
+    public Recurso atualizar(Long id, Recurso atualizado) {
+        Recurso existente = repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
 
-        Long tipoId = atualizado.getTipoRecurso() != null ? atualizado.getTipoRecurso().getId() : null;
+        Long tipoId = atualizado.getTipoRecurso().getId();
         TipoRecurso tipo = tipoRepository.buscarPorId(tipoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + tipoId));
 
-        if (repository.existsByNomeIgnoreCaseAndIdNot(atualizado.getNome(), id)) {
+        if (repository.existePorNomeIgnorandoId(atualizado.getNome(), id)) {
             throw new EntidadeDuplicadaException("Nome já existe: " + atualizado.getNome());
         }
 
-        Recurso withId = atualizado.withId(id).withTipoRecurso(tipo);
-        return repository.save(withId);
+        existente.renomear(atualizado.getNome());
+        existente.alterarLocalizacao(atualizado.getLocalizacao());
+        existente.alterarTipo(tipo);
+
+        return repository.salvar(existente);
     }
 
     @Transactional(readOnly = true)
-    public Recurso findById(Long id) {
-        return repository.findById(id)
+    public Recurso buscarPorId(Long id) {
+        return repository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
     }
 
     @Transactional(readOnly = true)
-    public List<Recurso> findAll() {
-        return repository.findAll();
+    public List<Recurso> buscarTodos() {
+        return repository.buscarTodos();
     }
 
     @Transactional
-    public void delete(Long id) {
-        if (!repository.existsById(id)) {
+    public void excluir(Long id) {
+        if (!repository.existePorId(id)) {
             throw new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id);
         }
-        repository.deleteById(id);
+        repository.excluirPorId(id);
     }
 
 }
