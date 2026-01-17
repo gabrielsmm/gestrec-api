@@ -23,7 +23,7 @@ public class RecursoUseCase {
     public Recurso create(Recurso novo) {
         novo.validate();
         Long tipoId = novo.getTipoRecurso() != null ? novo.getTipoRecurso().getId() : null;
-        TipoRecurso tipo = tipoRepository.findById(tipoId)
+        TipoRecurso tipo = tipoRepository.buscarPorId(tipoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + tipoId));
 
         if (repository.existsByNomeIgnoreCase(novo.getNome())) {
@@ -42,7 +42,7 @@ public class RecursoUseCase {
         atualizado.validate();
 
         Long tipoId = atualizado.getTipoRecurso() != null ? atualizado.getTipoRecurso().getId() : null;
-        TipoRecurso tipo = tipoRepository.findById(tipoId)
+        TipoRecurso tipo = tipoRepository.buscarPorId(tipoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + tipoId));
 
         if (repository.existsByNomeIgnoreCaseAndIdNot(atualizado.getNome(), id)) {

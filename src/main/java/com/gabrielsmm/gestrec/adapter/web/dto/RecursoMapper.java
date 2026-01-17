@@ -26,7 +26,7 @@ public interface RecursoMapper {
     RecursoResponse toResponse(Recurso domain);
 
     default TipoRecurso toTipoRecurso(Long id) {
-        return id != null ? new TipoRecurso(id, null, null) : null;
+        return id != null ? TipoRecurso.apenasComId(id) : null;
     }
 
     default boolean toAtivo(Boolean ativo) {

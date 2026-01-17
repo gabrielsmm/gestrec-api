@@ -17,44 +17,47 @@ public class TipoRecursoUseCase {
     private final TipoRecursoRepository repository;
 
     @Transactional
-    public TipoRecurso create(TipoRecurso novo) {
+    public TipoRecurso criar(TipoRecurso novo) {
         // valida regra de unicidade de nome
-        if (repository.existsByNomeIgnoreCase(novo.getNome())) {
+        if (repository.existePorNome(novo.getNome())) {
             throw new EntidadeDuplicadaException("Nome já existe: " + novo.getNome());
         }
-        return repository.save(novo);
+        return repository.salvar(novo);
     }
 
     @Transactional
-    public TipoRecurso update(Long id, TipoRecurso atualizado) {
-        if (!repository.existsById(id)) {
-            throw new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id);
-        }
+    public TipoRecurso atualizar(Long id, TipoRecurso atualizado) {
+        TipoRecurso existente = repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id));
+
         // valida unicidade ignorando o próprio id
-        if (repository.existsByNomeIgnoreCaseAndIdNot(atualizado.getNome(), id)) {
+        if (repository.existePorNomeIgnorandoId(atualizado.getNome(), id)) {
             throw new EntidadeDuplicadaException("Nome já existe: " + atualizado.getNome());
         }
-        TipoRecurso withId = atualizado.withId(id);
-        return repository.save(withId);
+
+        existente.renomear(atualizado.getNome());
+        existente.alterarDescricao(atualizado.getDescricao());
+
+        return repository.salvar(existente);
     }
 
     @Transactional(readOnly = true)
-    public TipoRecurso findById(Long id) {
-        return repository.findById(id)
+    public TipoRecurso buscarPorId(Long id) {
+        return repository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id));
     }
 
     @Transactional(readOnly = true)
-    public List<TipoRecurso> findAll() {
-        return repository.findAll();
+    public List<TipoRecurso> buscarTodos() {
+        return repository.buscarTodos();
     }
 
     @Transactional
-    public void delete(Long id) {
-        if (!repository.existsById(id)) {
+    public void excluir(Long id) {
+        if (!repository.existePorId(id)) {
             throw new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id);
         }
-        repository.deleteById(id);
+        repository.excluirPorId(id);
     }
 
 }

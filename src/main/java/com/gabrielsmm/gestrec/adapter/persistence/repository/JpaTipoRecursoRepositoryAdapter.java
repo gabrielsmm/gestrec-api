@@ -1,9 +1,9 @@
 package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
+import com.gabrielsmm.gestrec.adapter.persistence.entity.TipoRecursoEntity;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import com.gabrielsmm.gestrec.domain.repository.TipoRecursoRepository;
-import com.gabrielsmm.gestrec.adapter.persistence.entity.TipoRecursoEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
     }
 
     @Override
-    public TipoRecurso save(TipoRecurso tipoRecurso) {
+    public TipoRecurso salvar(TipoRecurso tipoRecurso) {
         try {
             TipoRecursoEntity savedEntity = repo.save(toEntity(tipoRecurso));
             return toDomain(savedEntity);
@@ -42,32 +42,32 @@ public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
     }
 
     @Override
-    public Optional<TipoRecurso> findById(Long id) {
+    public Optional<TipoRecurso> buscarPorId(Long id) {
         return repo.findById(id).map(this::toDomain);
     }
 
     @Override
-    public List<TipoRecurso> findAll() {
+    public List<TipoRecurso> buscarTodos() {
         return repo.findAll().stream().map(this::toDomain).toList();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void excluirPorId(Long id) {
         repo.deleteById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean existePorId(Long id) {
         return repo.existsById(id);
     }
 
     @Override
-    public boolean existsByNomeIgnoreCase(String nome) {
+    public boolean existePorNome(String nome) {
         return repo.existsByNomeIgnoreCase(nome);
     }
 
     @Override
-    public boolean existsByNomeIgnoreCaseAndIdNot(String nome, Long id) {
+    public boolean existePorNomeIgnorandoId(String nome, Long id) {
         return repo.existsByNomeIgnoreCaseAndIdNot(nome, id);
     }
 

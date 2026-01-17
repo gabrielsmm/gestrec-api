@@ -13,17 +13,6 @@ public interface ReservaMapper {
         return new Reserva(recurso, req.dataHoraInicio(), req.dataHoraFim());
     }
 
-//    default Reserva applyToDomain(ReservaRequest req, Reserva existing) {
-//        if (existing == null) return toDomain(req);
-//
-//        Recurso recurso = req.recursoId() != null ? toRecurso(req.recursoId()) : existing.getRecurso();
-//        LocalDateTime inicio = req.dataHoraInicio() != null ? req.dataHoraInicio() : existing.getDataHoraInicio();
-//        LocalDateTime fim = req.dataHoraFim() != null ? req.dataHoraFim() : existing.getDataHoraFim();
-//        ReservaStatus status = existing.getStatus();
-//
-//        return new Reserva(existing.getId(), recurso, inicio, fim, status);
-//    }
-
     ReservaResponse toResponse(Reserva domain);
 
     default Recurso toRecurso(Long id) {
