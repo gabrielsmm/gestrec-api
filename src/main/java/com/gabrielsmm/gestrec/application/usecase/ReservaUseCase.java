@@ -45,6 +45,10 @@ public class ReservaUseCase {
         Reserva existente = repository.buscarPorId(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada: " + id));
 
+        if (existente.getStatus() == ReservaStatus.CANCELADA) {
+            throw new RegraNegocioException("Não é possível atualizar uma reserva cancelada");
+        }
+
         Long recursoId = dadosAtualizados.getRecurso().getId();
         Recurso recurso = recursoRepository.buscarPorId(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: " + recursoId));
