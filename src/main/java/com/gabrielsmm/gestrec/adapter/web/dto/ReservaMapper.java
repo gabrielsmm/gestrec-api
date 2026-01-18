@@ -4,7 +4,7 @@ import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {RecursoMapper.class})
+@Mapper(componentModel = "spring", uses = {RecursoMapper.class, UsuarioMapper.class})
 public interface ReservaMapper {
 
     default Reserva toDomain(ReservaRequest req) {

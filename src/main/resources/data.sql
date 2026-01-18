@@ -15,14 +15,14 @@ INSERT INTO usuarios (nome, email, senha, perfil) VALUES ('Administrador', 'admi
 INSERT INTO usuarios (nome, email, senha, perfil) VALUES ('Alice Silva', 'alice@example.com', '$2a$10$ksAFEcHy/jARVp2iIGD4SuJi.u2vvARhYU1Mdl3l/kY9yAvhOnbI.', 'USER');
 INSERT INTO usuarios (nome, email, senha, perfil) VALUES ('Bob Santos', 'bob@example.com', '$2a$10$ksAFEcHy/jARVp2iIGD4SuJi.u2vvARhYU1Mdl3l/kY9yAvhOnbI.', 'USER');
 
-INSERT INTO reservas (recurso_id, data_hora_inicio, data_hora_fim, status) VALUES
-  ((SELECT id FROM recursos WHERE nome = 'Baia 1'), '2026-01-16 09:00:00', '2026-01-16 10:00:00', 1);
+INSERT INTO reservas (recurso_id, usuario_id, data_hora_inicio, data_hora_fim, status) VALUES
+  ((SELECT id FROM recursos WHERE nome = 'Baia 1'), (SELECT id FROM usuarios WHERE email = 'alice@example.com'), '2026-01-16 09:00:00', '2026-01-16 10:00:00', 1);
 
-INSERT INTO reservas (recurso_id, data_hora_inicio, data_hora_fim, status) VALUES
-  ((SELECT id FROM recursos WHERE nome = 'Baia 1'), '2026-01-16 11:00:00', '2026-01-16 12:00:00', 1);
+INSERT INTO reservas (recurso_id, usuario_id, data_hora_inicio, data_hora_fim, status) VALUES
+  ((SELECT id FROM recursos WHERE nome = 'Baia 1'), (SELECT id FROM usuarios WHERE email = 'bob@example.com'), '2026-01-16 11:00:00', '2026-01-16 12:00:00', 1);
 
-INSERT INTO reservas (recurso_id, data_hora_inicio, data_hora_fim, status) VALUES
-  ((SELECT id FROM recursos WHERE nome = 'Baia 2'), '2026-01-16 09:30:00', '2026-01-16 10:30:00', 1);
+INSERT INTO reservas (recurso_id, usuario_id, data_hora_inicio, data_hora_fim, status) VALUES
+  ((SELECT id FROM recursos WHERE nome = 'Baia 2'), (SELECT id FROM usuarios WHERE email = 'alice@example.com'), '2026-01-16 09:30:00', '2026-01-16 10:30:00', 1);
 
-INSERT INTO reservas (recurso_id, data_hora_inicio, data_hora_fim, status) VALUES
-  ((SELECT id FROM recursos WHERE nome = 'Sala Reunião 101'), '2026-01-16 14:00:00', '2026-01-16 15:00:00', 2);
+INSERT INTO reservas (recurso_id, usuario_id, data_hora_inicio, data_hora_fim, status) VALUES
+  ((SELECT id FROM recursos WHERE nome = 'Sala Reunião 101'), (SELECT id FROM usuarios WHERE email = 'admin@example.com'), '2026-01-16 14:00:00', '2026-01-16 15:00:00', 2);

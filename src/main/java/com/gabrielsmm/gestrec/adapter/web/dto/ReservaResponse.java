@@ -16,5 +16,7 @@ public record ReservaResponse(
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime dataHoraFim,
 
-        ReservaStatus status
+        ReservaStatus status,
+
+        UsuarioResponse usuario
 ) { }

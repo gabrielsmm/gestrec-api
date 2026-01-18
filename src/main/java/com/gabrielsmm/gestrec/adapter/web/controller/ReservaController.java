@@ -1,5 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
+import com.gabrielsmm.gestrec.adapter.security.UserDetailsImpl;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
@@ -8,11 +9,11 @@ import com.gabrielsmm.gestrec.domain.model.Reserva;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reservas")
@@ -23,18 +24,21 @@ public class ReservaController {
     private final ReservaMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req) {
+    public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dados = mapper.toDomain(req);
-        Reserva criada = useCase.criar(dados);
+        Reserva criada = useCase.criar(dados, userDetails.getId());
         return ResponseEntity
                 .created(URI.create("/api/reservas/" + criada.getId()))
                 .body(mapper.toResponse(criada));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id, @Valid @RequestBody ReservaRequest req) {
+    public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
+                                                     @Valid @RequestBody ReservaRequest req,
+                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dadosAtualizados = mapper.toDomain(req);
-        Reserva salva = useCase.atualizar(id, dadosAtualizados);
+        Reserva salva = useCase.atualizar(id, dadosAtualizados, userDetails.getId());
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
@@ -45,22 +49,30 @@ public class ReservaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReservaResponse>> buscarTodos() {
-        List<ReservaResponse> lista = useCase.buscarTodos().stream()
-                .map(mapper::toResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<ReservaResponse>> buscarTodos(@RequestParam(name = "me", required = false) Boolean apenasMeu,
+                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ReservaResponse> lista;
+        if (Boolean.TRUE.equals(apenasMeu)) {
+            lista = useCase.buscarPorUsuario(userDetails.getId()).stream()
+                    .map(mapper::toResponse).toList();
+        } else {
+            lista = useCase.buscarTodos().stream()
+                    .map(mapper::toResponse).toList();
+        }
         return ResponseEntity.ok(lista);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        useCase.excluir(id);
+    public ResponseEntity<Void> excluir(@PathVariable Long id,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        useCase.excluir(id, userDetails.getId());
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/cancelar")
-    public ResponseEntity<ReservaResponse> cancelar(@PathVariable Long id) {
-        Reserva cancelada = useCase.cancelar(id);
+    public ResponseEntity<ReservaResponse> cancelar(@PathVariable Long id,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Reserva cancelada = useCase.cancelar(id, userDetails.getId());
         return ResponseEntity.ok(mapper.toResponse(cancelada));
     }
 

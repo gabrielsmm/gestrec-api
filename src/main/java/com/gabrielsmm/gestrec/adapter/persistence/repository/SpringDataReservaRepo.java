@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface SpringDataReservaRepo extends JpaRepository<ReservaEntity, Long> {
@@ -28,5 +29,6 @@ public interface SpringDataReservaRepo extends JpaRepository<ReservaEntity, Long
             @Param("status") Integer status
     );
 
+    List<ReservaEntity> findByUsuarioId(Long usuarioId);
 
 }

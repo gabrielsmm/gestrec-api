@@ -15,14 +15,26 @@ public class Reserva {
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
     private ReservaStatus status;
+    private Usuario usuario;
 
-    // Construtor para novas reservas (sem id)
+    // Construtor para novas reservas (sem id e sem usuário) - usado antes de associar o usuário autenticado
     public Reserva(Recurso recurso, LocalDateTime inicio, LocalDateTime fim) {
-        this(null, recurso, inicio, fim, ReservaStatus.ATIVA);
+        if (recurso == null) throw new EntidadeInvalidaException("Recurso é obrigatório");
+        if (!recurso.isAtivo()) throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        if (inicio == null || fim == null) throw new EntidadeInvalidaException("Datas obrigatórias");
+        if (!inicio.isBefore(fim)) throw new RegraNegocioException("Início deve ser antes do fim");
+
+        this.id = null;
+        this.recurso = recurso;
+        this.dataHoraInicio = inicio;
+        this.dataHoraFim = fim;
+        this.status = ReservaStatus.ATIVA;
+        this.usuario = null;
     }
 
-    // Construtor para reconstrução (com id)
-    public Reserva(Long id, Recurso recurso, LocalDateTime inicio, LocalDateTime fim, ReservaStatus status) {
+    // Construtor para reconstrução (com id e usuário)
+    public Reserva(Long id, Recurso recurso, LocalDateTime inicio, LocalDateTime fim, ReservaStatus status, Usuario usuario) {
+        if (usuario == null) throw new EntidadeInvalidaException("Usuário é obrigatório");
         if (recurso == null) throw new EntidadeInvalidaException("Recurso é obrigatório");
         if (!recurso.isAtivo()) throw new RegraNegocioException("Recurso inativo não pode ser reservado");
         if (inicio == null || fim == null) throw new EntidadeInvalidaException("Datas obrigatórias");
@@ -33,6 +45,7 @@ public class Reserva {
         this.dataHoraInicio = inicio;
         this.dataHoraFim = fim;
         this.status = status != null ? status : ReservaStatus.ATIVA;
+        this.usuario = usuario;
     }
 
     public void reagendar(LocalDateTime novoInicio, LocalDateTime novoFim) {

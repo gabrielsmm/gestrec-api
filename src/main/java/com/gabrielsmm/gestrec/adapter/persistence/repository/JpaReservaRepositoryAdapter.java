@@ -1,14 +1,12 @@
 package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
-import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
-import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
-import com.gabrielsmm.gestrec.domain.model.Recurso;
-import com.gabrielsmm.gestrec.domain.model.Reserva;
-import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
-import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.ReservaEntity;
+import com.gabrielsmm.gestrec.adapter.persistence.entity.UsuarioEntity;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
+import com.gabrielsmm.gestrec.domain.model.*;
+import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
@@ -24,6 +22,7 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
 
     private final SpringDataReservaRepo repo;
     private final SpringDataRecursoRepo recursoRepo;
+    private final SpringDataUsuarioRepo usuarioRepo;
 
     private Reserva toDomain(ReservaEntity e) {
         if (e == null) return null;
@@ -42,12 +41,25 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
             );
         }
 
+        Usuario usuario = null;
+        if (e.getUsuario() != null) {
+            UsuarioEntity ue = e.getUsuario();
+            usuario = new Usuario(
+                    ue.getId(),
+                    ue.getNome(),
+                    ue.getEmail(),
+                    ue.getSenha(),
+                    ue.getPerfil()
+            );
+        }
+
         return new Reserva(
                 e.getId(),
                 recurso,
                 e.getDataHoraInicio(),
                 e.getDataHoraFim(),
-                ReservaStatus.fromCodigo(e.getStatus())
+                ReservaStatus.fromCodigo(e.getStatus()),
+                usuario
         );
     }
 
@@ -67,6 +79,16 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
                     .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado: id=" + recursoId));
 
             e.setRecurso(re);
+        }
+
+        if (r.getUsuario() != null) {
+            Long usuarioId = r.getUsuario().getId();
+            if (usuarioId == null) {
+                throw new IllegalArgumentException("Usuario deve possuir ID");
+            }
+            UsuarioEntity ue = usuarioRepo.findById(usuarioId)
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuario não encontrado: id=" + usuarioId));
+            e.setUsuario(ue);
         }
 
         e.setDataHoraInicio(r.getDataHoraInicio());
@@ -110,5 +132,11 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
     public boolean existeConflitoDeHorario(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long idReservaIgnorada, ReservaStatus status) {
         Integer s = status == null ? null : status.getCodigo();
         return repo.existeConflitoDeHorario(recursoId, dataHoraInicio, dataHoraFim, idReservaIgnorada, s);
+    }
+
+    @Override
+    public List<Reserva> buscarPorUsuario(Long usuarioId) {
+        return repo.findByUsuarioId(usuarioId).stream()
+                .map(this::toDomain).collect(Collectors.toList());
     }
 }

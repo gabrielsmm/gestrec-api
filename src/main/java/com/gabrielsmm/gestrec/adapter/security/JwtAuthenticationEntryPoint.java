@@ -25,7 +25,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         String json = String.format(
                 "{\"timestamp\":\"%s\",\"status\":401,\"error\":\"Não autorizado\",\"message\":\"%s\",\"path\":\"%s\",\"errors\":{}}",
                 timestamp,
-                authException == null ? "Acesso não autorizado" : authException.getMessage(),
+                "Acesso não autorizado",
                 path
         );
 
