@@ -6,6 +6,8 @@ import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
 import com.gabrielsmm.gestrec.application.usecase.ReservaUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reservas")
 @RequiredArgsConstructor
+@Tag(name = "2 - Reservas", description = "Operações de reserva de recursos")
 public class ReservaController {
 
     private final ReservaUseCase useCase;
     private final ReservaMapper mapper;
 
     @PostMapping
+    @Operation(summary = "Criar reserva")
     public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dados = mapper.toDomain(req);
@@ -36,6 +40,7 @@ public class ReservaController {
 
     @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @PutMapping("/{id}")
+    @Operation(summary = "Atualizar reserva")
     public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
                                                      @Valid @RequestBody ReservaRequest req,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -46,12 +51,14 @@ public class ReservaController {
 
     @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar reserva por id")
     public ResponseEntity<ReservaResponse> buscarPorId(@PathVariable Long id) {
         Reserva r = useCase.buscarPorId(id);
         return ResponseEntity.ok(mapper.toResponse(r));
     }
 
     @GetMapping
+    @Operation(summary = "Listar reservas (use 'me=true' para apenas minhas reservas)")
     public ResponseEntity<List<ReservaResponse>> buscarTodos(@RequestParam(name = "me", required = false) Boolean apenasMeu,
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<ReservaResponse> lista;
@@ -67,6 +74,7 @@ public class ReservaController {
 
     @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir reserva")
     public ResponseEntity<Void> excluir(@PathVariable Long id,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         useCase.excluir(id, userDetails.getId());
@@ -75,6 +83,7 @@ public class ReservaController {
 
     @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @PatchMapping("/{id}/cancelar")
+    @Operation(summary = "Cancelar reserva")
     public ResponseEntity<ReservaResponse> cancelar(@PathVariable Long id,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva cancelada = useCase.cancelar(id, userDetails.getId());
