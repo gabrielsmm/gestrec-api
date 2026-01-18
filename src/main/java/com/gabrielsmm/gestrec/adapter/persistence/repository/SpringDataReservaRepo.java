@@ -31,4 +31,6 @@ public interface SpringDataReservaRepo extends JpaRepository<ReservaEntity, Long
 
     List<ReservaEntity> findByUsuarioId(Long usuarioId);
 
+    boolean existsByIdAndUsuarioId(Long id, Long usuarioId);
+
 }

@@ -15,6 +15,7 @@ public interface ReservaRepository {
     List<Reserva> buscarPorUsuario(Long usuarioId);
     void excluirPorId(Long id);
     boolean existePorId(Long id);
+    boolean existePorIdEUsuarioId(Long id, Long usuarioId);
     boolean existeConflitoDeHorario(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long idReservaIgnorada, ReservaStatus status);
 
 }

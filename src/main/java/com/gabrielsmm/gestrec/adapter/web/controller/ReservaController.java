@@ -9,6 +9,7 @@ import com.gabrielsmm.gestrec.domain.model.Reserva;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class ReservaController {
                 .body(mapper.toResponse(criada));
     }
 
+    @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
                                                      @Valid @RequestBody ReservaRequest req,
@@ -42,6 +44,7 @@ public class ReservaController {
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
+    @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ReservaResponse> buscarPorId(@PathVariable Long id) {
         Reserva r = useCase.buscarPorId(id);
@@ -62,6 +65,7 @@ public class ReservaController {
         return ResponseEntity.ok(lista);
     }
 
+    @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -69,6 +73,7 @@ public class ReservaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<ReservaResponse> cancelar(@PathVariable Long id,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {

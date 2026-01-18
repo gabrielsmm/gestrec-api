@@ -139,4 +139,10 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
         return repo.findByUsuarioId(usuarioId).stream()
                 .map(this::toDomain).collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existePorIdEUsuarioId(Long id, Long usuarioId) {
+        return repo.existsByIdAndUsuarioId(id, usuarioId);
+    }
+
 }

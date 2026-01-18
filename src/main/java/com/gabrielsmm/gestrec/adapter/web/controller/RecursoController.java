@@ -8,6 +8,7 @@ import com.gabrielsmm.gestrec.domain.model.Recurso;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/recursos")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class RecursoController {
 
