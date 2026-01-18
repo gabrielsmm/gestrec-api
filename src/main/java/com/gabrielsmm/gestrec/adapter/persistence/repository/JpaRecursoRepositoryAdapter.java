@@ -6,7 +6,7 @@ import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.domain.repository.RecursoRepository;
+import com.gabrielsmm.gestrec.domain.port.repository.RecursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.infrastructure.config;
 
-import com.gabrielsmm.gestrec.infrastructure.security.JwtAuthenticationEntryPoint;
-import com.gabrielsmm.gestrec.infrastructure.security.JwtAuthenticationFilter;
+import com.gabrielsmm.gestrec.adapter.security.JwtAuthenticationEntryPoint;
+import com.gabrielsmm.gestrec.adapter.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

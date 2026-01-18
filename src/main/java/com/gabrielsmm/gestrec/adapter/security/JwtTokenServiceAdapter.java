@@ -1,6 +1,6 @@
-package com.gabrielsmm.gestrec.infrastructure.security;
+package com.gabrielsmm.gestrec.adapter.security;
 
-import com.gabrielsmm.gestrec.application.port.TokenService;
+import com.gabrielsmm.gestrec.application.port.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

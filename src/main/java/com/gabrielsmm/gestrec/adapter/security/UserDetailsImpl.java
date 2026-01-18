@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.infrastructure.security;
+package com.gabrielsmm.gestrec.adapter.security;
 
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import com.gabrielsmm.gestrec.domain.model.UsuarioPerfil;

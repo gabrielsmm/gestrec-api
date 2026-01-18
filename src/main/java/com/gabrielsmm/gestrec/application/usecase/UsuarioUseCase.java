@@ -1,9 +1,9 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.PasswordEncoderPort;
+import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
-import com.gabrielsmm.gestrec.domain.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

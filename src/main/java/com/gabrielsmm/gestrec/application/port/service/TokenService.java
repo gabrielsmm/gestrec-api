@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.port;
+package com.gabrielsmm.gestrec.application.port.service;
 
 public interface TokenService {
 

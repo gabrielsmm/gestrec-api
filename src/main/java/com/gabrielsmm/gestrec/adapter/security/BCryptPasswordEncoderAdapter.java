@@ -1,6 +1,6 @@
-package com.gabrielsmm.gestrec.infrastructure.security;
+package com.gabrielsmm.gestrec.adapter.security;
 
-import com.gabrielsmm.gestrec.application.port.PasswordEncoderPort;
+import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

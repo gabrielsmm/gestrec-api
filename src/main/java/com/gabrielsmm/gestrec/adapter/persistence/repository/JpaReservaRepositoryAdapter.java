@@ -6,7 +6,7 @@ import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.domain.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.ReservaEntity;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package com.gabrielsmm.gestrec.infrastructure.security;
+package com.gabrielsmm.gestrec.adapter.security;
 
-import com.gabrielsmm.gestrec.domain.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
