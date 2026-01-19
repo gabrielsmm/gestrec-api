@@ -19,7 +19,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Gestrec API")
                         .version("v1")
-                        .description("API de gestão de reservas"))
+                        .description("API de gestão de reservas de recursos"))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()

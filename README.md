@@ -32,6 +32,13 @@ O sistema foi desenvolvido utilizando o estilo arquitetural **Monolítico**, org
 
 A arquitetura segue os princípios da **Clean Architecture**, organizando o sistema em camadas com dependências direcionadas para o núcleo do domínio.
 
+A aplicação é organizada nas seguintes camadas:
+
+- **Domain**: contém o modelo de domínio e regras de negócio centrais, sem dependência de frameworks.
+- **Application (Use Cases)**: orquestra os casos de uso e aplica regras de negócio de forma coordenada.
+- **Adapters**: fazem a adaptação entre o mundo externo (HTTP, banco de dados, segurança) e o domínio.
+- **Infrastructure**: concentra configurações técnicas e integração com frameworks.
+
 ### Diagrama Simplificado
 
 
@@ -74,8 +81,13 @@ Os princípios SOLID foram utilizados como boas práticas no design do código:
 - Spring Boot
 - Spring Web
 - Spring Data JPA
-- Banco de dados H2
+- Spring Security
+- JWT (JSON Web Token)
+- Swagger / OpenAPI
+- H2 Database
 - Maven
+- Lombok
+- MapStruct
 
 ---
 
@@ -86,16 +98,30 @@ Os princípios SOLID foram utilizados como boas práticas no design do código:
 - Criação de reservas
 - Cancelamento de reservas
 - Consulta de reservas por recurso e período
+- Autenticação de usuários via JWT
+- Autorização baseada em perfil de usuário
+- Proteção de endpoints sensíveis
 
 ### Regras de Negócio
 
 - Não permitir reservas com conflito de horário para o mesmo recurso
 - Recursos inativos não podem ser reservados
 - A data de início da reserva deve ser anterior à data de fim
+- Apenas usuários autenticados podem realizar reservas
+- Determinadas operações são restritas a perfis específicos
 
 ---
 
-## 8. Instruções para Execução
+## 8. Segurança
+
+A aplicação utiliza autenticação baseada em JWT (JSON Web Token).
+
+- O login gera um token de acesso
+- O token deve ser enviado no header Authorization
+- O controle de acesso é realizado com base no perfil do usuário
+- A segurança é integrada ao Spring Security
+
+## 9. Instruções para Execução
 
 Clonar o repositório
 
@@ -114,6 +140,6 @@ Acessar a API (exemplos):
 - `http://localhost:8080/reservas`
 - `http://localhost:8080/tipos-recursos`
 
-## 9. Integrantes
+## 10. Integrantes
 
 - Gabriel da Silva Mendes de Moraes
