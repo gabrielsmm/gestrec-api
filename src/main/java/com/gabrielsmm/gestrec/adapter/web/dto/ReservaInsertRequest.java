@@ -1,0 +1,19 @@
+package com.gabrielsmm.gestrec.adapter.web.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
+
+public record ReservaInsertRequest(
+        @NotNull
+        Long recursoId,
+
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime dataHoraInicio,
+
+        @NotNull
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime dataHoraFim
+) { }

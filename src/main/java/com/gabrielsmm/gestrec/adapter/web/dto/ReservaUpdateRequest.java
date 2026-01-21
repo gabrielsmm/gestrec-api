@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record ReservaRequest(
-        @NotNull
-        Long recursoId,
-
+public record ReservaUpdateRequest(
         @NotNull
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime dataHoraInicio,
@@ -16,4 +13,5 @@ public record ReservaRequest(
         @NotNull
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime dataHoraFim
-) { }
+) {}
+

@@ -1,8 +1,9 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
 import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
-import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
+import com.gabrielsmm.gestrec.adapter.web.dto.ReservaInsertRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
+import com.gabrielsmm.gestrec.adapter.web.dto.ReservaUpdateRequest;
 import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
 import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
@@ -31,7 +32,7 @@ public class ReservaController {
 
     @PostMapping
     @Operation(summary = "Criar reserva")
-    public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req,
+    public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaInsertRequest req,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dados = mapper.toDomain(req);
         Reserva criada = commandUseCase.criar(dados, userDetails.getId());
@@ -44,7 +45,7 @@ public class ReservaController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar reserva")
     public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
-                                                     @Valid @RequestBody ReservaRequest req,
+                                                     @Valid @RequestBody ReservaUpdateRequest req,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dadosAtualizados = mapper.toDomain(req);
         Reserva salva = commandUseCase.atualizar(id, dadosAtualizados, userDetails.getId());

@@ -6,14 +6,27 @@ import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.ObjectFactory;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {RecursoEntityMapper.class, UsuarioEntityMapper.class})
 public interface ReservaEntityMapper {
 
-    @Mapping(target = "status", ignore = true)
-    Reserva toDomain(ReservaEntity entity);
+    default Reserva toDomain(ReservaEntity entity) {
+        if (entity == null) return null;
+
+        var recurso = Mappers.getMapper(RecursoEntityMapper.class).toDomain(entity.getRecurso());
+        var usuario = Mappers.getMapper(UsuarioEntityMapper.class).toDomain(entity.getUsuario());
+        var status = mapStatusToDomain(entity.getStatus());
+
+        return Reserva.reconstruida(
+                entity.getId(),
+                recurso,
+                usuario,
+                entity.getDataHoraInicio(),
+                entity.getDataHoraFim(),
+                status
+        );
+    }
 
     @Mapping(source = "status", target = "status", qualifiedByName = "mapStatusToEntity")
     ReservaEntity toEntity(Reserva domain);
@@ -28,17 +41,4 @@ public interface ReservaEntityMapper {
         return status == null ? ReservaStatus.ATIVA.getCodigo() : status.getCodigo();
     }
 
-    @ObjectFactory
-    default Reserva createReserva(ReservaEntity entity) {
-        if (entity == null) return null;
-
-        RecursoEntityMapper recursoMapper = Mappers.getMapper(RecursoEntityMapper.class);
-        UsuarioEntityMapper usuarioMapper = Mappers.getMapper(UsuarioEntityMapper.class);
-
-        var recurso = entity.getRecurso() == null ? null : recursoMapper.toDomain(entity.getRecurso());
-        var usuario = entity.getUsuario() == null ? null : usuarioMapper.toDomain(entity.getUsuario());
-        var status = mapStatusToDomain(entity.getStatus());
-
-        return new Reserva(entity.getId(), recurso, entity.getDataHoraInicio(), entity.getDataHoraFim(), status, usuario);
-    }
 }

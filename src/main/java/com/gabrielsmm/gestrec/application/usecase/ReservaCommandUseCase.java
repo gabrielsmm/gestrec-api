@@ -1,11 +1,11 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
-import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
-import com.gabrielsmm.gestrec.domain.model.*;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
+import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
+import com.gabrielsmm.gestrec.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +34,7 @@ public class ReservaCommandUseCase {
             throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
         }
 
-        Reserva reserva = new Reserva(null, recurso, nova.getDataHoraInicio(), nova.getDataHoraFim(), ReservaStatus.ATIVA, usuario);
+        Reserva reserva = Reserva.reconstruida(null, recurso, usuario, nova.getDataHoraInicio(), nova.getDataHoraFim(), ReservaStatus.ATIVA);
 
         return repository.salvar(reserva);
     }
@@ -58,9 +58,7 @@ public class ReservaCommandUseCase {
             throw new RegraNegocioException("Não é possível atualizar uma reserva cancelada");
         }
 
-        Long recursoId = dadosAtualizados.getRecurso().getId();
-        Recurso recurso = recursoRepository.buscarPorId(recursoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + recursoId));
+        Long recursoId = existente.getRecurso().getId();
 
         if (repository.existeConflitoDeHorario(
                 recursoId,
@@ -71,8 +69,8 @@ public class ReservaCommandUseCase {
             throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
         }
 
+        // Só permite reagendamento
         existente.reagendar(dadosAtualizados.getDataHoraInicio(), dadosAtualizados.getDataHoraFim());
-        existente.alterarRecurso(recurso);
 
         return repository.salvar(existente);
     }
