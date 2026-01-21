@@ -7,10 +7,8 @@ import com.gabrielsmm.gestrec.domain.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class ReservaCommandUseCase {
 
