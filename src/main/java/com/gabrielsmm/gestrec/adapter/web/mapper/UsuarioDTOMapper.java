@@ -11,7 +11,7 @@ public interface UsuarioDTOMapper {
 
     default Usuario toDomain(UsuarioRequest req) {
         if (req == null) return null;
-        return new Usuario(req.nome(), req.email(), req.senha(), UsuarioPerfil.USER);
+        return Usuario.novoUsuario(req.nome(), req.email(), req.senha(), UsuarioPerfil.USER);
     }
 
     UsuarioResponse toResponse(Usuario domain);

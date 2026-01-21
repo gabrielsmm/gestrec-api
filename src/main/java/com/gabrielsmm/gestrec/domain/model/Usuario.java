@@ -14,29 +14,8 @@ public class Usuario {
     private String senha;
     private UsuarioPerfil perfil;
 
-    protected Usuario(Long id) {
-        this.id = id;
-    }
-
-    // Construtor para criação (sem id)
-    public Usuario(String nome, String email, String senha, UsuarioPerfil perfil) {
-        this(null, nome, email, senha, perfil);
-    }
-
-    // Construtor para reconstrução (com id)
-    public Usuario(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Nome do usuário é obrigatório");
-        }
-        if (email == null || email.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Email do usuário é obrigatório");
-        }
-        if (senha == null || senha.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Senha do usuário é obrigatória");
-        }
-        if (perfil == null) {
-            throw new EntidadeInvalidaException("Perfil do usuário é obrigatório");
-        }
+    // Construtor privado: só pode ser chamado pelas fábricas
+    private Usuario(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -44,35 +23,73 @@ public class Usuario {
         this.perfil = perfil;
     }
 
-    public static Usuario apenasComId(Long id) {
-        return new Usuario(id);
+    // Fábrica para criação (sem id)
+    public static Usuario novoUsuario(String nome, String email, String senha, UsuarioPerfil perfil) {
+        validarNome(nome);
+        validarEmail(email);
+        validarSenha(senha);
+        validarPerfil(perfil);
+        return new Usuario(null, nome, email, senha, perfil);
     }
 
-    public void alterarNome(String novoNome) {
-        if (novoNome == null || novoNome.trim().isEmpty()) {
+    // Fábrica para reconstrução (com id e todos os dados)
+    public static Usuario reconstruido(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
+        validarNome(nome);
+        validarEmail(email);
+        validarSenha(senha);
+        validarPerfil(perfil);
+        return new Usuario(id, nome, email, senha, perfil);
+    }
+
+    // Fábrica para casos em que só precisamos do id (ex.: relacionamentos)
+    public static Usuario apenasComId(Long id) {
+        if (id == null) throw new EntidadeInvalidaException("Id do usuário é obrigatório");
+        return new Usuario(id, null, null, null, null);
+    }
+
+    // Validações
+    private static void validarNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
             throw new EntidadeInvalidaException("Nome do usuário é obrigatório");
         }
+    }
+
+    private static void validarEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new EntidadeInvalidaException("Email do usuário é obrigatório");
+        }
+    }
+
+    private static void validarSenha(String senha) {
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new EntidadeInvalidaException("Senha do usuário é obrigatória");
+        }
+    }
+
+    private static void validarPerfil(UsuarioPerfil perfil) {
+        if (perfil == null) {
+            throw new EntidadeInvalidaException("Perfil do usuário é obrigatório");
+        }
+    }
+
+    // Métodos de negócio
+    public void alterarNome(String novoNome) {
+        validarNome(novoNome);
         this.nome = novoNome;
     }
 
     public void alterarEmail(String novoEmail) {
-        if (novoEmail == null || novoEmail.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Email do usuário é obrigatório");
-        }
+        validarEmail(novoEmail);
         this.email = novoEmail;
     }
 
     public void alterarSenha(String novaSenha) {
-        if (novaSenha == null || novaSenha.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Senha do usuário é obrigatória");
-        }
+        validarSenha(novaSenha);
         this.senha = novaSenha;
     }
 
     public void alterarPerfil(UsuarioPerfil novoPerfil) {
-        if (novoPerfil == null) {
-            throw new EntidadeInvalidaException("Perfil do usuário é obrigatório");
-        }
+        validarPerfil(novoPerfil);
         this.perfil = novoPerfil;
     }
 

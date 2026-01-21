@@ -21,8 +21,8 @@ public class UsuarioConfig {
     }
 
     @Bean
-    public UsuarioRepository usuarioRepository(SpringDataUsuarioRepo springDataUsuarioRepo) {
-        return new JpaUsuarioRepositoryAdapter(springDataUsuarioRepo);
+    public UsuarioRepository usuarioRepository(SpringDataUsuarioRepo springDataUsuarioRepo, UsuarioEntityMapper mapper) {
+        return new JpaUsuarioRepositoryAdapter(springDataUsuarioRepo, mapper);
     }
 
     @Bean
