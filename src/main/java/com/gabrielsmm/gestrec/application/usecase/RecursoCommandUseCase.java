@@ -1,20 +1,16 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-@Service
 @RequiredArgsConstructor
-public class RecursoUseCase {
+public class RecursoCommandUseCase {
 
     private final RecursoRepository repository;
     private final TipoRecursoRepository tipoRepository;
@@ -51,17 +47,6 @@ public class RecursoUseCase {
         existente.alterarTipo(tipo);
 
         return repository.salvar(existente);
-    }
-
-    @Transactional(readOnly = true)
-    public Recurso buscarPorId(Long id) {
-        return repository.buscarPorId(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
-    }
-
-    @Transactional(readOnly = true)
-    public List<Recurso> buscarTodos() {
-        return repository.buscarTodos();
     }
 
     @Transactional

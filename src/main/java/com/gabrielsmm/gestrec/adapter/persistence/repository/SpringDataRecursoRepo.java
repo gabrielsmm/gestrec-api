@@ -1,6 +1,6 @@
-package com.gabrielsmm.gestrec.adapter.persistence.jpa.repository;
+package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
-import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.RecursoEntity;
+import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

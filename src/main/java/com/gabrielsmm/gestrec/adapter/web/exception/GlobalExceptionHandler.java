@@ -156,6 +156,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest req) {
+        System.out.println("Erro inesperado: " + ex.getMessage());
         ErrorResponse body = new ErrorResponse(
                 OffsetDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

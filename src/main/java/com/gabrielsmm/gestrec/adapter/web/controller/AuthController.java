@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 
 import com.gabrielsmm.gestrec.adapter.web.dto.LoginRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TokenResponse;
-import com.gabrielsmm.gestrec.application.usecase.AuthUseCase;
+import com.gabrielsmm.gestrec.application.usecase.AuthCommandUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "1 - Usuários", description = "Operações de usuário e autenticação")
 public class AuthController {
 
-    private final AuthUseCase authUseCase;
+    private final AuthCommandUseCase authUseCase;
 
     @PostMapping("/login")
     @Operation(summary = "Autenticar e receber token JWT")

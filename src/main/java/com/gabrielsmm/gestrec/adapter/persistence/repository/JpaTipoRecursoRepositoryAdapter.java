@@ -1,41 +1,41 @@
-package com.gabrielsmm.gestrec.adapter.persistence.jpa.repository;
+package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
-import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.TipoRecursoEntity;
+import com.gabrielsmm.gestrec.adapter.persistence.entity.TipoRecursoEntity;
+import com.gabrielsmm.gestrec.adapter.persistence.mapper.TipoRecursoEntityMapper;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
 @RequiredArgsConstructor
 public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
 
     private final SpringDataTipoRecursoRepo repo;
+    private final TipoRecursoEntityMapper mapper;
 
-    private TipoRecurso toDomain(TipoRecursoEntity e) {
-        if (e == null) return null;
-        return new TipoRecurso(e.getId(), e.getNome(), e.getDescricao());
-    }
-
-    private TipoRecursoEntity toEntity(TipoRecurso t) {
-        if (t == null) return null;
-        TipoRecursoEntity e = new TipoRecursoEntity();
-        e.setId(t.getId());
-        e.setNome(t.getNome());
-        e.setDescricao(t.getDescricao());
-        return e;
-    }
+//    private TipoRecurso toDomain(TipoRecursoEntity e) {
+//        if (e == null) return null;
+//        return new TipoRecurso(e.getId(), e.getNome(), e.getDescricao());
+//    }
+//
+//    private TipoRecursoEntity toEntity(TipoRecurso t) {
+//        if (t == null) return null;
+//        TipoRecursoEntity e = new TipoRecursoEntity();
+//        e.setId(t.getId());
+//        e.setNome(t.getNome());
+//        e.setDescricao(t.getDescricao());
+//        return e;
+//    }
 
     @Override
     public TipoRecurso salvar(TipoRecurso tipoRecurso) {
         try {
-            TipoRecursoEntity savedEntity = repo.save(toEntity(tipoRecurso));
-            return toDomain(savedEntity);
+            TipoRecursoEntity savedEntity = repo.save(mapper.toEntity(tipoRecurso));
+            return mapper.toDomain(savedEntity);
         } catch (DataIntegrityViolationException ex) {
             throw new EntidadeDuplicadaException("Nome já existe: " + tipoRecurso.getNome());
         }
@@ -43,12 +43,12 @@ public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
 
     @Override
     public Optional<TipoRecurso> buscarPorId(Long id) {
-        return repo.findById(id).map(this::toDomain);
+        return repo.findById(id).map(mapper::toDomain);
     }
 
     @Override
     public List<TipoRecurso> buscarTodos() {
-        return repo.findAll().stream().map(this::toDomain).toList();
+        return repo.findAll().stream().map(mapper::toDomain).toList();
     }
 
     @Override

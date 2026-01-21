@@ -5,7 +5,7 @@ import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoResponse;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface TipoRecursoDTOMapper {
 
     default TipoRecurso toDomain(TipoRecursoRequest req) {

@@ -1,18 +1,16 @@
-package com.gabrielsmm.gestrec.adapter.persistence.jpa.repository;
+package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
-import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.UsuarioEntity;
+import com.gabrielsmm.gestrec.adapter.persistence.entity.UsuarioEntity;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 public class JpaUsuarioRepositoryAdapter implements UsuarioRepository {
 

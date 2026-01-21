@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.adapter.persistence.jpa.entity;
+package com.gabrielsmm.gestrec.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -6,7 +6,7 @@ import com.gabrielsmm.gestrec.domain.model.Usuario;
 import com.gabrielsmm.gestrec.domain.model.UsuarioPerfil;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface UsuarioDTOMapper {
 
     default Usuario toDomain(UsuarioRequest req) {

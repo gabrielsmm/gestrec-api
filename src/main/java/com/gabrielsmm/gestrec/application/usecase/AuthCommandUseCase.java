@@ -1,16 +1,16 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
-import com.gabrielsmm.gestrec.domain.model.Usuario;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import com.gabrielsmm.gestrec.application.port.service.TokenService;
+import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
+import com.gabrielsmm.gestrec.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthUseCase {
+public class AuthCommandUseCase {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoderPort passwordEncoder;

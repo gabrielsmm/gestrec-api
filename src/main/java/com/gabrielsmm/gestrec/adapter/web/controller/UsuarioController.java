@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
-import com.gabrielsmm.gestrec.application.usecase.UsuarioUseCase;
+import com.gabrielsmm.gestrec.application.usecase.UsuarioCommandUseCase;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,7 @@ import java.net.URI;
 @Tag(name = "1 - Usuários", description = "Operações de usuário e autenticação")
 public class UsuarioController {
 
-    private final UsuarioUseCase useCase;
+    private final UsuarioCommandUseCase useCase;
     private final UsuarioDTOMapper mapper;
 
     @PostMapping
