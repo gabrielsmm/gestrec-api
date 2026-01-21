@@ -3,26 +3,26 @@ package com.gabrielsmm.gestrec.adapter.persistence.mapper;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ObjectFactory;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {TipoRecursoEntityMapper.class})
 public interface RecursoEntityMapper {
 
-    @Mapping(target = "nome", ignore = true)
-    @Mapping(target = "localizacao", ignore = true)
-    @Mapping(target = "ativo", ignore = true)
-    @Mapping(target = "tipoRecurso", ignore = true)
-    Recurso toDomain(RecursoEntity recursoEntity);
+    default Recurso toDomain(RecursoEntity entity) {
+        if (entity == null) return null;
 
-    RecursoEntity toEntity(Recurso recurso);
+        var tipo = entity.getTipoRecurso() == null
+                ? null
+                : Mappers.getMapper(TipoRecursoEntityMapper.class).toDomain(entity.getTipoRecurso());
 
-    @ObjectFactory
-    default Recurso createRecurso(RecursoEntity e) {
-        if (e == null) return null;
-        TipoRecursoEntityMapper tipoMapper = org.mapstruct.factory.Mappers.getMapper(TipoRecursoEntityMapper.class);
-        var tipo = e.getTipoRecurso() == null ? null : tipoMapper.toDomain(e.getTipoRecurso());
-        return new Recurso(e.getId(), e.getNome(), e.getLocalizacao(), e.isAtivo(), tipo);
+        return Recurso.reconstruido(
+                entity.getId(),
+                entity.getNome(),
+                entity.getLocalizacao(),
+                entity.isAtivo(),
+                tipo
+        );
     }
 
+    RecursoEntity toEntity(Recurso domain);
 }

@@ -12,8 +12,7 @@ public interface RecursoDTOMapper {
     default Recurso toDomain(RecursoRequest req) {
         if (req == null) return null;
         TipoRecurso tipo = toTipoRecurso(req.tipoRecursoId());
-        boolean ativo = toAtivo(req.ativo());
-        return new Recurso(req.nome(), req.localizacao(), ativo, tipo);
+        return Recurso.novoRecurso(req.nome(), req.localizacao(), tipo);
     }
 
     RecursoResponse toResponse(Recurso domain);

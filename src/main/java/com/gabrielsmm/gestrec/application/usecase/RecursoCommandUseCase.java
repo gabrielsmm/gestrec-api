@@ -25,7 +25,7 @@ public class RecursoCommandUseCase {
             throw new EntidadeDuplicadaException("Nome já existe: " + novo.getNome());
         }
 
-        Recurso recurso = new Recurso(novo.getNome(), novo.getLocalizacao(), novo.isAtivo(), tipo);
+        Recurso recurso = Recurso.reconstruido(null, novo.getNome(), novo.getLocalizacao(), true, tipo);
         return repository.salvar(recurso);
     }
 

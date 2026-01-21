@@ -16,7 +16,5 @@ public record RecursoRequest(
 
         @NotNull
         @Positive
-        Long tipoRecursoId,
-
-        Boolean ativo
+        Long tipoRecursoId
 ) {}

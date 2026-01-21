@@ -11,29 +11,11 @@ public class Recurso {
     private final Long id;
     private String nome;
     private String localizacao;
-    private boolean ativo = true;
+    private boolean ativo;
     private TipoRecurso tipoRecurso;
 
-    protected Recurso(Long id) {
-        this.id = id;
-    }
-
-    // Construtor para criação (sem id)
-    public Recurso(String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
-        this(null, nome, localizacao, ativo, tipoRecurso);
-    }
-
-    // Construtor para reconstrução (com id)
-    public Recurso(Long id, String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Nome do recurso é obrigatório");
-        }
-        if (localizacao == null || localizacao.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Localização do recurso é obrigatória");
-        }
-        if (tipoRecurso == null) {
-            throw new EntidadeInvalidaException("TipoRecurso é obrigatório");
-        }
+    // Construtor privado: só pode ser chamado pelas fábricas
+    private Recurso(Long id, String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
         this.id = id;
         this.nome = nome;
         this.localizacao = localizacao;
@@ -41,21 +23,55 @@ public class Recurso {
         this.tipoRecurso = tipoRecurso;
     }
 
-    public static Recurso apenasComId(Long id) {
-        return new Recurso(id);
+    // Fábrica para criação de recurso novo (sem id)
+    public static Recurso novoRecurso(String nome, String localizacao, TipoRecurso tipoRecurso) {
+        validarNome(nome);
+        validarLocalizacao(localizacao);
+        validarTipo(tipoRecurso);
+        return new Recurso(null, nome, localizacao, true, tipoRecurso); // sempre nasce ativo
     }
 
-    public void renomear(String novoNome) {
-        if (novoNome == null || novoNome.trim().isEmpty()) {
+    // Fábrica para reconstrução (com id e todos os dados)
+    public static Recurso reconstruido(Long id, String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
+        validarNome(nome);
+        validarLocalizacao(localizacao);
+        validarTipo(tipoRecurso);
+        return new Recurso(id, nome, localizacao, ativo, tipoRecurso);
+    }
+
+    // Fábrica para casos em que só precisamos do id (ex.: relacionamentos)
+    public static Recurso apenasComId(Long id) {
+        if (id == null) throw new EntidadeInvalidaException("Id do recurso é obrigatório");
+        return new Recurso(id, null, null, true, null);
+    }
+
+    // Validações
+    private static void validarNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
             throw new EntidadeInvalidaException("Nome do recurso é obrigatório");
         }
+    }
+
+    private static void validarLocalizacao(String localizacao) {
+        if (localizacao == null || localizacao.trim().isEmpty()) {
+            throw new EntidadeInvalidaException("Localização do recurso é obrigatória");
+        }
+    }
+
+    private static void validarTipo(TipoRecurso tipoRecurso) {
+        if (tipoRecurso == null) {
+            throw new EntidadeInvalidaException("TipoRecurso é obrigatório");
+        }
+    }
+
+    // Métodos de negócio
+    public void renomear(String novoNome) {
+        validarNome(novoNome);
         this.nome = novoNome;
     }
 
     public void alterarLocalizacao(String novaLocalizacao) {
-        if (novaLocalizacao == null || novaLocalizacao.trim().isEmpty()) {
-            throw new EntidadeInvalidaException("Localização do recurso é obrigatória");
-        }
+        validarLocalizacao(novaLocalizacao);
         this.localizacao = novaLocalizacao;
     }
 
@@ -68,9 +84,7 @@ public class Recurso {
     }
 
     public void alterarTipo(TipoRecurso novoTipo) {
-        if (novoTipo == null) {
-            throw new EntidadeInvalidaException("TipoRecurso é obrigatório");
-        }
+        validarTipo(novoTipo);
         this.tipoRecurso = novoTipo;
     }
 
