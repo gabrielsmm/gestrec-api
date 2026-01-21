@@ -1,18 +1,7 @@
 package com.gabrielsmm.gestrec.adapter.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class TipoRecursoResponse {
-
-    private Long id;
-    private String nome;
-    private String descricao;
-
-}
+public record TipoRecursoResponse(
+        Long id,
+        String nome,
+        String descricao
+) {}

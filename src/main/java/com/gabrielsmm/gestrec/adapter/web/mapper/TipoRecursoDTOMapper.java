@@ -10,7 +10,7 @@ public interface TipoRecursoDTOMapper {
 
     default TipoRecurso toDomain(TipoRecursoRequest req) {
         if (req == null) return null;
-        return new TipoRecurso(req.getNome(), req.getDescricao());
+        return new TipoRecurso(req.nome(), req.descricao());
     }
 
     TipoRecursoResponse toResponse(TipoRecurso domain);
