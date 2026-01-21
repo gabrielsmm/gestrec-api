@@ -1,10 +1,11 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
 import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
-import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
-import com.gabrielsmm.gestrec.application.usecase.ReservaUseCase;
+import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaMapper;
+import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +25,8 @@ import java.util.List;
 @Tag(name = "2 - Reservas", description = "Operações de reserva de recursos")
 public class ReservaController {
 
-    private final ReservaUseCase useCase;
+    private final ReservaCommandUseCase commandUseCase;
+    private final ReservaQueryUseCase queryUseCase;
     private final ReservaMapper mapper;
 
     @PostMapping
@@ -32,7 +34,7 @@ public class ReservaController {
     public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaRequest req,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dados = mapper.toDomain(req);
-        Reserva criada = useCase.criar(dados, userDetails.getId());
+        Reserva criada = commandUseCase.criar(dados, userDetails.getId());
         return ResponseEntity
                 .created(URI.create("/api/reservas/" + criada.getId()))
                 .body(mapper.toResponse(criada));
@@ -45,7 +47,7 @@ public class ReservaController {
                                                      @Valid @RequestBody ReservaRequest req,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva dadosAtualizados = mapper.toDomain(req);
-        Reserva salva = useCase.atualizar(id, dadosAtualizados, userDetails.getId());
+        Reserva salva = commandUseCase.atualizar(id, dadosAtualizados, userDetails.getId());
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
@@ -53,7 +55,7 @@ public class ReservaController {
     @GetMapping("/{id}")
     @Operation(summary = "Buscar reserva por id")
     public ResponseEntity<ReservaResponse> buscarPorId(@PathVariable Long id) {
-        Reserva r = useCase.buscarPorId(id);
+        Reserva r = queryUseCase.buscarPorId(id);
         return ResponseEntity.ok(mapper.toResponse(r));
     }
 
@@ -63,10 +65,10 @@ public class ReservaController {
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<ReservaResponse> lista;
         if (Boolean.TRUE.equals(apenasMeu)) {
-            lista = useCase.buscarPorUsuario(userDetails.getId()).stream()
+            lista = queryUseCase.buscarPorUsuario(userDetails.getId()).stream()
                     .map(mapper::toResponse).toList();
         } else {
-            lista = useCase.buscarTodos().stream()
+            lista = queryUseCase.buscarTodos().stream()
                     .map(mapper::toResponse).toList();
         }
         return ResponseEntity.ok(lista);
@@ -77,7 +79,7 @@ public class ReservaController {
     @Operation(summary = "Excluir reserva")
     public ResponseEntity<Void> excluir(@PathVariable Long id,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        useCase.excluir(id, userDetails.getId());
+        commandUseCase.excluir(id, userDetails.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -86,7 +88,7 @@ public class ReservaController {
     @Operation(summary = "Cancelar reserva")
     public ResponseEntity<ReservaResponse> cancelar(@PathVariable Long id,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Reserva cancelada = useCase.cancelar(id, userDetails.getId());
+        Reserva cancelada = commandUseCase.cancelar(id, userDetails.getId());
         return ResponseEntity.ok(mapper.toResponse(cancelada));
     }
 
