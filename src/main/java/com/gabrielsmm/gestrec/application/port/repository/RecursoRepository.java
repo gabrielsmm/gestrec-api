@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.domain.port.repository;
+package com.gabrielsmm.gestrec.application.port.repository;
 
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 

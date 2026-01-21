@@ -7,7 +7,7 @@ import com.gabrielsmm.gestrec.domain.model.UsuarioPerfil;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UsuarioMapper {
+public interface UsuarioDTOMapper {
 
     default Usuario toDomain(UsuarioRequest req) {
         if (req == null) return null;

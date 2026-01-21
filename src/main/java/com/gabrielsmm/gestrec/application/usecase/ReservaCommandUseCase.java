@@ -3,9 +3,9 @@ package com.gabrielsmm.gestrec.application.usecase;
 import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.*;
-import com.gabrielsmm.gestrec.domain.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
-import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

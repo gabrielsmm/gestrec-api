@@ -6,7 +6,7 @@ import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.UsuarioEntity;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.*;
-import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.domain.port.service;
+package com.gabrielsmm.gestrec.application.port.service;
 
 public interface PasswordEncoderPort {
 

@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
-import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
 import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
@@ -27,7 +27,7 @@ public class ReservaController {
 
     private final ReservaCommandUseCase commandUseCase;
     private final ReservaQueryUseCase queryUseCase;
-    private final ReservaMapper mapper;
+    private final ReservaDTOMapper mapper;
 
     @PostMapping
     @Operation(summary = "Criar reserva")

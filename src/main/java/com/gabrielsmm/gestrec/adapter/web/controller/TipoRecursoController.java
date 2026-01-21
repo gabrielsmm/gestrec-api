@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoDTOMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoResponse;
 import com.gabrielsmm.gestrec.application.usecase.TipoRecursoUseCase;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class TipoRecursoController {
 
     private final TipoRecursoUseCase useCase;
-    private final TipoRecursoMapper mapper;
+    private final TipoRecursoDTOMapper mapper;
 
     @PostMapping
     @Operation(summary = "Criar tipo de recurso")

@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.security.jwt;
 
-import com.gabrielsmm.gestrec.domain.port.service.TokenService;
+import com.gabrielsmm.gestrec.application.port.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

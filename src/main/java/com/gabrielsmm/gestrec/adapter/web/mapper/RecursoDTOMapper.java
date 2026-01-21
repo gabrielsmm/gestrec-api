@@ -6,8 +6,8 @@ import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {TipoRecursoMapper.class})
-public interface RecursoMapper {
+@Mapper(componentModel = "spring", uses = {TipoRecursoDTOMapper.class})
+public interface RecursoDTOMapper {
 
     default Recurso toDomain(RecursoRequest req) {
         if (req == null) return null;

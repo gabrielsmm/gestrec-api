@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.jpa.repository;
 import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.TipoRecursoEntity;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
-import com.gabrielsmm.gestrec.domain.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

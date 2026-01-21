@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
 import com.gabrielsmm.gestrec.application.usecase.UsuarioUseCase;
@@ -24,7 +24,7 @@ import java.net.URI;
 public class UsuarioController {
 
     private final UsuarioUseCase useCase;
-    private final UsuarioMapper mapper;
+    private final UsuarioDTOMapper mapper;
 
     @PostMapping
     @Operation(summary = "Cadastrar usuário")

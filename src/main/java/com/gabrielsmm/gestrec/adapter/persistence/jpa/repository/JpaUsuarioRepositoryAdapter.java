@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.jpa.repository;
 import com.gabrielsmm.gestrec.adapter.persistence.jpa.entity.UsuarioEntity;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
-import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;

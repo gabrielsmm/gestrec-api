@@ -6,8 +6,8 @@ import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {RecursoMapper.class, UsuarioMapper.class})
-public interface ReservaMapper {
+@Mapper(componentModel = "spring", uses = {RecursoDTOMapper.class, UsuarioDTOMapper.class})
+public interface ReservaDTOMapper {
 
     default Reserva toDomain(ReservaRequest req) {
         if (req == null) return null;

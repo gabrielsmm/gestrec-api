@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
-import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
