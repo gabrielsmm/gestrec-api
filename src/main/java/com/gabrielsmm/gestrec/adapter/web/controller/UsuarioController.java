@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
 import com.gabrielsmm.gestrec.application.usecase.UsuarioUseCase;

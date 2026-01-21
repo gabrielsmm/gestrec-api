@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.domain.model;
 
-import com.gabrielsmm.gestrec.domain.exception.EntidadeInvalidaException;
-import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
+import com.gabrielsmm.gestrec.domain.exception.business.EntidadeInvalidaException;
+import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

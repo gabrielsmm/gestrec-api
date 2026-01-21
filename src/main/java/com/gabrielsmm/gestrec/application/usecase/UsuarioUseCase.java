@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
-import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.port.service.PasswordEncoderPort;
+import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import com.gabrielsmm.gestrec.domain.port.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

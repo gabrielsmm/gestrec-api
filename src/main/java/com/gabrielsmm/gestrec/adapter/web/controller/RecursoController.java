@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.dto.RecursoMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.RecursoMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoResponse;
 import com.gabrielsmm.gestrec.application.usecase.RecursoUseCase;

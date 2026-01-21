@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.security.UserDetailsImpl;
-import com.gabrielsmm.gestrec.adapter.web.dto.ReservaMapper;
+import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
+import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
 import com.gabrielsmm.gestrec.application.usecase.ReservaUseCase;

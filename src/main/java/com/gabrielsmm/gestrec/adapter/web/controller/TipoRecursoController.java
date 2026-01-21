@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoMapper;
+import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoResponse;
 import com.gabrielsmm.gestrec.application.usecase.TipoRecursoUseCase;

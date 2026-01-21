@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
-import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
+import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
+import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
 import com.gabrielsmm.gestrec.domain.model.*;
 import com.gabrielsmm.gestrec.domain.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.domain.port.repository.ReservaRepository;
