@@ -45,7 +45,7 @@ A arquitetura segue os princípios da **Clean Architecture**, organizando o sist
 - Baixo acoplamento entre camadas
 - Independência das regras de negócio em relação a frameworks
 
-### DDD (Domain-Driven Design)
+### Conceitos inspirados em DDD
 - Modelagem explícita do domínio
 - Entidades representando conceitos do mundo real (Recurso, Reserva, TipoRecurso, Usuário)
 - Regras de negócio centralizadas no domínio
