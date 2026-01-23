@@ -3,8 +3,8 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoResponse;
 import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoDTOMapper;
-import com.gabrielsmm.gestrec.application.usecase.TipoRecursoCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.TipoRecursoQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.tiporecurso.TipoRecursoCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.tiporecurso.TipoRecursoQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +32,7 @@ public class TipoRecursoController {
     @PostMapping
     @Operation(summary = "Criar tipo de recurso")
     public ResponseEntity<TipoRecursoResponse> criar(@Valid @RequestBody TipoRecursoRequest req) {
-        TipoRecurso dados = mapper.toDomain(req);
-        TipoRecurso criado = commandUseCase.criar(dados);
+        TipoRecurso criado = commandUseCase.criar(mapper.toCommand(req));
         return ResponseEntity
                 .created(URI.create("/api/tipos-recurso/" + criado.getId()))
                 .body(mapper.toResponse(criado));
@@ -42,8 +41,7 @@ public class TipoRecursoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar tipo de recurso")
     public ResponseEntity<TipoRecursoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody TipoRecursoRequest req) {
-        TipoRecurso dadosAtualizados = mapper.toDomain(req);
-        TipoRecurso salvo = commandUseCase.atualizar(id, dadosAtualizados);
+        TipoRecurso salvo = commandUseCase.atualizar(mapper.toCommand(id, req));
         return ResponseEntity.ok(mapper.toResponse(salvo));
     }
 

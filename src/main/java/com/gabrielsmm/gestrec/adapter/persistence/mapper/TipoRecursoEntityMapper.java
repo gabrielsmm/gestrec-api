@@ -9,11 +9,7 @@ public interface TipoRecursoEntityMapper {
 
     default TipoRecurso toDomain(TipoRecursoEntity entity) {
         if (entity == null) return null;
-        return TipoRecurso.reconstruido(
-                entity.getId(),
-                entity.getNome(),
-                entity.getDescricao()
-        );
+        return TipoRecurso.reconstruir(entity.getId(), entity.getNome(), entity.getDescricao());
     }
 
     TipoRecursoEntity toEntity(TipoRecurso tipoRecurso);

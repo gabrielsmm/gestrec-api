@@ -16,7 +16,7 @@ public interface RecursoDTOMapper {
         return new CriarRecursoCommand(req.nome(), req.localizacao(), req.tipoRecursoId());
     }
 
-    default AtualizarRecursoCommand toCommand(RecursoRequest req, Long recursoId) {
+    default AtualizarRecursoCommand toCommand(Long recursoId, RecursoRequest req) {
         if (req == null) return null;
 
         return new AtualizarRecursoCommand(recursoId, req.nome(), req.localizacao(), req.tipoRecursoId());

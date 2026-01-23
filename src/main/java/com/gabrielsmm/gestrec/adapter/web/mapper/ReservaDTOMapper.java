@@ -18,7 +18,7 @@ public interface ReservaDTOMapper {
         return new CriarReservaCommand(req.recursoId(), usuarioId, req.dataHoraInicio(), req.dataHoraFim());
     }
 
-    default AtualizarReservaCommand toCommand(ReservaUpdateRequest req, Long reservaId, Long usuarioId) {
+    default AtualizarReservaCommand toCommand(Long reservaId, Long usuarioId, ReservaUpdateRequest req) {
         if (req == null) return null;
 
         return new AtualizarReservaCommand(reservaId, usuarioId, req.dataHoraInicio(), req.dataHoraFim());

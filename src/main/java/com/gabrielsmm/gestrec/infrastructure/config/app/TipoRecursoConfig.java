@@ -5,8 +5,8 @@ import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaTipoRecursoRepos
 import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataTipoRecursoRepo;
 import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoDTOMapper;
 import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
-import com.gabrielsmm.gestrec.application.usecase.TipoRecursoCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.TipoRecursoQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.tiporecurso.TipoRecursoCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.tiporecurso.TipoRecursoQueryUseCase;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;

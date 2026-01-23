@@ -46,7 +46,7 @@ public class ReservaController {
     public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
                                                      @Valid @RequestBody ReservaUpdateRequest req,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Reserva salva = commandUseCase.atualizar(mapper.toCommand(req, id, userDetails.getId()));
+        Reserva salva = commandUseCase.atualizar(mapper.toCommand(id, userDetails.getId(), req));
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 

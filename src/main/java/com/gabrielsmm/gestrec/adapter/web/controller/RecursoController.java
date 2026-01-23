@@ -41,7 +41,7 @@ public class RecursoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar recurso")
     public ResponseEntity<RecursoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody RecursoRequest req) {
-        Recurso salvo = commandUseCase.atualizar(mapper.toCommand(req, id));
+        Recurso salvo = commandUseCase.atualizar(mapper.toCommand(id, req));
         return ResponseEntity.ok(mapper.toResponse(salvo));
     }
 

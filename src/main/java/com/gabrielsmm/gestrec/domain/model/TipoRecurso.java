@@ -12,29 +12,27 @@ public class TipoRecurso {
     private String nome;
     private String descricao;
 
-    // Construtor privado: só pode ser chamado pelas fábricas
+    // Construtor privado: garante que a entidade só seja criada de forma válida
     private TipoRecurso(Long id, String nome, String descricao) {
+        validarNome(nome);
+
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
     }
 
-    // Fábrica para criação (sem id)
-    public static TipoRecurso novoTipoRecurso(String nome, String descricao) {
-        validarNome(nome);
+    // Fábrica para criação de um novo tipo de recurso válido
+    public static TipoRecurso criarNovo(String nome, String descricao) {
         return new TipoRecurso(null, nome, descricao);
     }
 
-    // Fábrica para reconstrução (com id e todos os dados)
-    public static TipoRecurso reconstruido(Long id, String nome, String descricao) {
-        validarNome(nome);
-        return new TipoRecurso(id, nome, descricao);
-    }
+    // Fábrica para reconstrução de um tipo de recurso já existente (ex: persistência)
+    public static TipoRecurso reconstruir(Long id, String nome, String descricao) {
+        if (id == null) {
+            throw new EntidadeInvalidaException("Id é obrigatório para reconstrução do tipo de recurso");
+        }
 
-    // Fábrica para casos em que só precisamos do id (ex.: relacionamentos)
-    public static TipoRecurso apenasComId(Long id) {
-        if (id == null) throw new EntidadeInvalidaException("Id do TipoRecurso é obrigatório");
-        return new TipoRecurso(id, null, null);
+        return new TipoRecurso(id, nome, descricao);
     }
 
     // Validações
@@ -56,9 +54,10 @@ public class TipoRecurso {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TipoRecurso that = (TipoRecurso) o;
-        return Objects.equals(id, that.id);
+        return id != null && id.equals(that.id);
     }
 
     @Override
