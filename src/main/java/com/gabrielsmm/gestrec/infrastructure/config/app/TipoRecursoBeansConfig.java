@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class TipoRecursoConfig {
+public class TipoRecursoBeansConfig {
 
     @Bean
     public TipoRecursoCommandUseCase tipoRecursoCommandUseCase(TipoRecursoRepository repository) {

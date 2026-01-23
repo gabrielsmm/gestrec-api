@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class AuthConfig {
+public class AuthBeansConfig {
 
     @Bean
     @ConditionalOnMissingBean
