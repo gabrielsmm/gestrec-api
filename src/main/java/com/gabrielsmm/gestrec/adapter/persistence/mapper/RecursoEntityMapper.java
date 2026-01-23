@@ -15,13 +15,7 @@ public interface RecursoEntityMapper {
                 ? null
                 : Mappers.getMapper(TipoRecursoEntityMapper.class).toDomain(entity.getTipoRecurso());
 
-        return Recurso.reconstruido(
-                entity.getId(),
-                entity.getNome(),
-                entity.getLocalizacao(),
-                entity.isAtivo(),
-                tipo
-        );
+        return Recurso.reconstruir(entity.getId(), entity.getNome(), entity.getLocalizacao(), entity.isAtivo(), tipo);
     }
 
     RecursoEntity toEntity(Recurso domain);

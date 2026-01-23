@@ -9,13 +9,21 @@ import java.util.Objects;
 public class Recurso {
 
     private final Long id;
+    private TipoRecurso tipoRecurso;
     private String nome;
     private String localizacao;
     private boolean ativo;
-    private TipoRecurso tipoRecurso;
 
-    // Construtor privado: só pode ser chamado pelas fábricas
-    private Recurso(Long id, String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
+    // Construtor privado: garante que a entidade só seja criada de forma válida
+    private Recurso(Long id,
+                    String nome,
+                    String localizacao,
+                    boolean ativo,
+                    TipoRecurso tipoRecurso) {
+        validarNome(nome);
+        validarLocalizacao(localizacao);
+        validarTipo(tipoRecurso);
+
         this.id = id;
         this.nome = nome;
         this.localizacao = localizacao;
@@ -23,27 +31,26 @@ public class Recurso {
         this.tipoRecurso = tipoRecurso;
     }
 
-    // Fábrica para criação de recurso novo (sem id)
-    public static Recurso novoRecurso(String nome, String localizacao, TipoRecurso tipoRecurso) {
-        validarNome(nome);
-        validarLocalizacao(localizacao);
-        validarTipo(tipoRecurso);
+    // Fábrica para criação de um novo recurso válido
+    public static Recurso criarNovo(String nome,
+                                    String localizacao,
+                                    TipoRecurso tipoRecurso) {
         return new Recurso(null, nome, localizacao, true, tipoRecurso); // sempre nasce ativo
     }
 
-    // Fábrica para reconstrução (com id e todos os dados)
-    public static Recurso reconstruido(Long id, String nome, String localizacao, boolean ativo, TipoRecurso tipoRecurso) {
-        validarNome(nome);
-        validarLocalizacao(localizacao);
-        validarTipo(tipoRecurso);
+    // Fábrica para reconstrução de um recurso já existente (ex: persistência)
+    public static Recurso reconstruir(Long id,
+                                      String nome,
+                                      String localizacao,
+                                      boolean ativo,
+                                      TipoRecurso tipoRecurso) {
+        if (id == null) {
+            throw new EntidadeInvalidaException("Id é obrigatório para reconstrução do recurso");
+        }
+
         return new Recurso(id, nome, localizacao, ativo, tipoRecurso);
     }
 
-    // Fábrica para casos em que só precisamos do id (ex.: relacionamentos)
-    public static Recurso apenasComId(Long id) {
-        if (id == null) throw new EntidadeInvalidaException("Id do recurso é obrigatório");
-        return new Recurso(id, null, null, true, null);
-    }
 
     // Validações
     private static void validarNome(String nome) {
@@ -65,6 +72,11 @@ public class Recurso {
     }
 
     // Métodos de negócio
+    public void alterarTipo(TipoRecurso novoTipo) {
+        validarTipo(novoTipo);
+        this.tipoRecurso = novoTipo;
+    }
+
     public void renomear(String novoNome) {
         validarNome(novoNome);
         this.nome = novoNome;
@@ -83,16 +95,12 @@ public class Recurso {
         this.ativo = false;
     }
 
-    public void alterarTipo(TipoRecurso novoTipo) {
-        validarTipo(novoTipo);
-        this.tipoRecurso = novoTipo;
-    }
-
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recurso recurso = (Recurso) o;
-        return Objects.equals(id, recurso.id);
+        return id != null && id.equals(recurso.id);
     }
 
     @Override

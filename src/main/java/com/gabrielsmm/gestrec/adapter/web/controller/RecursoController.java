@@ -3,8 +3,8 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoResponse;
 import com.gabrielsmm.gestrec.adapter.web.mapper.RecursoDTOMapper;
-import com.gabrielsmm.gestrec.application.usecase.RecursoCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.RecursoQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.recurso.RecursoCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.recurso.RecursoQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +32,7 @@ public class RecursoController {
     @PostMapping
     @Operation(summary = "Criar recurso")
     public ResponseEntity<RecursoResponse> criar(@Valid @RequestBody RecursoRequest req) {
-        Recurso dados = mapper.toDomain(req);
-        Recurso criado = commandUseCase.criar(dados);
+        Recurso criado = commandUseCase.criar(mapper.toCommand(req));
         return ResponseEntity
                 .created(URI.create("/api/recursos/" + criado.getId()))
                 .body(mapper.toResponse(criado));
@@ -42,8 +41,7 @@ public class RecursoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar recurso")
     public ResponseEntity<RecursoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody RecursoRequest req) {
-        Recurso dadosAtualizados = mapper.toDomain(req);
-        Recurso salvo = commandUseCase.atualizar(id, dadosAtualizados);
+        Recurso salvo = commandUseCase.atualizar(mapper.toCommand(req, id));
         return ResponseEntity.ok(mapper.toResponse(salvo));
     }
 

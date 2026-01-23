@@ -18,16 +18,14 @@ public class ReservaCommandUseCase {
 
     @Transactional
     public Reserva criar(CriarReservaCommand command) {
-        var recursoId = command.recursoId();
-        Recurso recurso = recursoRepository.buscarPorId(recursoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + recursoId));
+        Recurso recurso = recursoRepository.buscarPorId(command.recursoId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + command.recursoId()));
 
-        var usuarioId = command.usuarioId();
-        Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + usuarioId));
+        Usuario usuario = usuarioRepository.buscarPorId(command.usuarioId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + command.usuarioId()));
 
         if (repository.existeConflitoDeHorario(
-                recursoId,
+                command.recursoId(),
                 command.dataHoraInicio(),
                 command.dataHoraFim(),
                 null,

@@ -6,8 +6,8 @@ import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataRecursoRe
 import com.gabrielsmm.gestrec.adapter.web.mapper.RecursoDTOMapper;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
-import com.gabrielsmm.gestrec.application.usecase.RecursoCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.RecursoQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.recurso.RecursoCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.recurso.RecursoQueryUseCase;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
