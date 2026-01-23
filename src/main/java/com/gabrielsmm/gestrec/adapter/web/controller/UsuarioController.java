@@ -1,9 +1,9 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
-import com.gabrielsmm.gestrec.application.usecase.UsuarioCommandUseCase;
+import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
+import com.gabrielsmm.gestrec.application.usecase.usuario.UsuarioCommandUseCase;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,8 +29,7 @@ public class UsuarioController {
     @PostMapping
     @Operation(summary = "Cadastrar usuário")
     public ResponseEntity<UsuarioResponse> cadastrar(@Valid @RequestBody UsuarioRequest req) {
-        Usuario novo = mapper.toDomain(req);
-        Usuario salvo = useCase.cadastrar(novo);
+        Usuario salvo = useCase.cadastrar(mapper.toCommand(req));
         return ResponseEntity
                 .created(URI.create("/api/usuarios/" + salvo.getId()))
                 .body(mapper.toResponse(salvo));

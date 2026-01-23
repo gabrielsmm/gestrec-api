@@ -14,8 +14,13 @@ public class Usuario {
     private String senha;
     private UsuarioPerfil perfil;
 
-    // Construtor privado: só pode ser chamado pelas fábricas
+    // Construtor privado: garante que a entidade só seja criada de forma válida
     private Usuario(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
+        validarNome(nome);
+        validarEmail(email);
+        validarSenha(senha);
+        validarPerfil(perfil);
+
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -23,28 +28,18 @@ public class Usuario {
         this.perfil = perfil;
     }
 
-    // Fábrica para criação (sem id)
-    public static Usuario novoUsuario(String nome, String email, String senha, UsuarioPerfil perfil) {
-        validarNome(nome);
-        validarEmail(email);
-        validarSenha(senha);
-        validarPerfil(perfil);
-        return new Usuario(null, nome, email, senha, perfil);
+    // Fábrica para criação de um novo usuário válido
+    public static Usuario criarNovo(String nome, String email, String senha) {
+        return new Usuario(null, nome, email, senha, UsuarioPerfil.USER);
     }
 
-    // Fábrica para reconstrução (com id e todos os dados)
-    public static Usuario reconstruido(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
-        validarNome(nome);
-        validarEmail(email);
-        validarSenha(senha);
-        validarPerfil(perfil);
+    // Fábrica para reconstrução de um usuário já existente (ex: persistência)
+    public static Usuario reconstruir(Long id, String nome, String email, String senha, UsuarioPerfil perfil) {
+        if (id == null) {
+            throw new EntidadeInvalidaException("Id é obrigatório para reconstrução do usuário");
+        }
+
         return new Usuario(id, nome, email, senha, perfil);
-    }
-
-    // Fábrica para casos em que só precisamos do id (ex.: relacionamentos)
-    public static Usuario apenasComId(Long id) {
-        if (id == null) throw new EntidadeInvalidaException("Id do usuário é obrigatório");
-        return new Usuario(id, null, null, null, null);
     }
 
     // Validações
@@ -95,9 +90,10 @@ public class Usuario {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id);
+        return id != null && id.equals(usuario.id);
     }
 
     @Override

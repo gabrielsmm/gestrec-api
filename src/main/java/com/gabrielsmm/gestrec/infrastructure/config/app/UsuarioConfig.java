@@ -6,7 +6,7 @@ import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataUsuarioRe
 import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
-import com.gabrielsmm.gestrec.application.usecase.UsuarioCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.usuario.UsuarioCommandUseCase;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;

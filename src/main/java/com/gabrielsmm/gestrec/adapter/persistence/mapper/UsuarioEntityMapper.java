@@ -9,13 +9,7 @@ public interface UsuarioEntityMapper {
 
     default Usuario toDomain(UsuarioEntity entity) {
         if (entity == null) return null;
-        return Usuario.reconstruido(
-                entity.getId(),
-                entity.getNome(),
-                entity.getEmail(),
-                entity.getSenha(),
-                entity.getPerfil()
-        );
+        return Usuario.reconstruir(entity.getId(), entity.getNome(), entity.getEmail(), entity.getSenha(), entity.getPerfil());
     }
 
     UsuarioEntity toEntity(Usuario usuario);
