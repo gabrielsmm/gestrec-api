@@ -17,61 +17,80 @@ public class Reserva {
     private LocalDateTime dataHoraFim;
     private ReservaStatus status;
 
-    // Construtor privado: só pode ser chamado pelas fábricas
+    // Construtor privado: garante que a entidade só seja criada de forma válida
     private Reserva(Long id,
                     Recurso recurso,
                     Usuario usuario,
                     LocalDateTime inicio,
                     LocalDateTime fim,
                     ReservaStatus status) {
+        validarRecurso(recurso);
+        validarUsuario(usuario);
+        validarDatas(inicio, fim);
+
         this.id = id;
         this.recurso = recurso;
         this.usuario = usuario;
         this.dataHoraInicio = inicio;
         this.dataHoraFim = fim;
-        this.status = status != null ? status : ReservaStatus.ATIVA;
+        this.status = status;
     }
 
-    // Fábrica para reservas novas (sem id e sem usuário ainda)
-    public static Reserva novaReserva(Recurso recurso, LocalDateTime inicio, LocalDateTime fim) {
-        validarRecurso(recurso);
-        validarDatas(inicio, fim);
-        return new Reserva(null, recurso, null, inicio, fim, ReservaStatus.ATIVA);
+    // Fábrica para criação de uma nova reserva válida
+    public static Reserva criarNova(Recurso recurso,
+                                    Usuario usuario,
+                                    LocalDateTime inicio,
+                                    LocalDateTime fim) {
+        return new Reserva(null, recurso, usuario, inicio, fim, ReservaStatus.ATIVA);
     }
 
-    // Fábrica para reconstrução (com id e usuário obrigatórios)
-    public static Reserva reconstruida(Long id, Recurso recurso, Usuario usuario,
-                                       LocalDateTime inicio, LocalDateTime fim, ReservaStatus status) {
-        validarRecurso(recurso);
-        validarUsuario(usuario);
-        validarDatas(inicio, fim);
+    // Fábrica para reconstrução de uma reserva já existente (ex: persistência)
+    public static Reserva reconstruir(Long id,
+                                      Recurso recurso,
+                                      Usuario usuario,
+                                      LocalDateTime inicio,
+                                      LocalDateTime fim,
+                                      ReservaStatus status) {
+        if (id == null) {
+            throw new EntidadeInvalidaException("Id é obrigatório para reconstrução da reserva");
+        }
+
         return new Reserva(id, recurso, usuario, inicio, fim, status);
-    }
-
-    // Fábrica para atualização (apenas datas)
-    public static Reserva apenasComDatas(LocalDateTime inicio, LocalDateTime fim) {
-        validarDatas(inicio, fim);
-        return new Reserva(null, null, null, inicio, fim, null);
     }
 
     // Validações
     private static void validarRecurso(Recurso recurso) {
-        if (recurso == null) throw new EntidadeInvalidaException("Recurso é obrigatório");
-        if (!recurso.isAtivo()) throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        if (recurso == null) {
+            throw new EntidadeInvalidaException("Recurso é obrigatório");
+        }
+        if (!recurso.isAtivo()) {
+            throw new RegraNegocioException("Recurso inativo não pode ser reservado");
+        }
     }
 
     private static void validarUsuario(Usuario usuario) {
-        if (usuario == null) throw new EntidadeInvalidaException("Usuário é obrigatório");
+        if (usuario == null) {
+            throw new EntidadeInvalidaException("Usuário é obrigatório");
+        }
     }
 
     private static void validarDatas(LocalDateTime inicio, LocalDateTime fim) {
-        if (inicio == null || fim == null) throw new EntidadeInvalidaException("Datas obrigatórias");
-        if (!inicio.isBefore(fim)) throw new RegraNegocioException("Início deve ser antes do fim");
+        if (inicio == null || fim == null) {
+            throw new EntidadeInvalidaException("Datas de início e fim são obrigatórias");
+        }
+        if (!inicio.isBefore(fim)) {
+            throw new RegraNegocioException("Data de início deve ser anterior à data de fim");
+        }
     }
 
     // Regras de negócio
     public void reagendar(LocalDateTime novoInicio, LocalDateTime novoFim) {
         validarDatas(novoInicio, novoFim);
+
+        if (this.status == ReservaStatus.CANCELADA) {
+            throw new RegraNegocioException("Reserva cancelada não pode ser reagendada");
+        }
+
         this.dataHoraInicio = novoInicio;
         this.dataHoraFim = novoFim;
     }

@@ -10,10 +10,10 @@ public record ReservaResponse(
 
         RecursoResponse recurso,
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime dataHoraInicio,
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime dataHoraFim,
 
         ReservaStatus status,

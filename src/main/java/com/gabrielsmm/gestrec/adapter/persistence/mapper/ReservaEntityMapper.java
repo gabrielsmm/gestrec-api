@@ -18,14 +18,7 @@ public interface ReservaEntityMapper {
         var usuario = Mappers.getMapper(UsuarioEntityMapper.class).toDomain(entity.getUsuario());
         var status = mapStatusToDomain(entity.getStatus());
 
-        return Reserva.reconstruida(
-                entity.getId(),
-                recurso,
-                usuario,
-                entity.getDataHoraInicio(),
-                entity.getDataHoraFim(),
-                status
-        );
+        return Reserva.reconstruir(entity.getId(), recurso, usuario, entity.getDataHoraInicio(), entity.getDataHoraFim(), status);
     }
 
     @Mapping(source = "status", target = "status", qualifiedByName = "mapStatusToEntity")

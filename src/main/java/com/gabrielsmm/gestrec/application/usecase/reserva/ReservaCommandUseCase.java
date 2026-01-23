@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase;
+package com.gabrielsmm.gestrec.application.usecase.reserva;
 
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
@@ -17,35 +17,36 @@ public class ReservaCommandUseCase {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public Reserva criar(Reserva nova, Long usuarioId) {
-        Long recursoId = nova.getRecurso().getId();
+    public Reserva criar(CriarReservaCommand command) {
+        var recursoId = command.recursoId();
         Recurso recurso = recursoRepository.buscarPorId(recursoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + recursoId));
 
+        var usuarioId = command.usuarioId();
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + usuarioId));
 
         if (repository.existeConflitoDeHorario(
                 recursoId,
-                nova.getDataHoraInicio(),
-                nova.getDataHoraFim(),
+                command.dataHoraInicio(),
+                command.dataHoraFim(),
                 null,
                 ReservaStatus.ATIVA)) {
             throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
         }
 
-        Reserva reserva = Reserva.reconstruida(null, recurso, usuario, nova.getDataHoraInicio(), nova.getDataHoraFim(), ReservaStatus.ATIVA);
+        Reserva reserva = Reserva.criarNova(recurso, usuario, command.dataHoraInicio(), command.dataHoraFim());
 
         return repository.salvar(reserva);
     }
 
     @Transactional
-    public Reserva atualizar(Long id, Reserva dadosAtualizados, Long usuarioId) {
-        Reserva existente = repository.buscarPorId(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
+    public Reserva atualizar(AtualizarReservaCommand command) {
+        Reserva existente = repository.buscarPorId(command.reservaId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + command.reservaId()));
 
-        Usuario usuarioAtual = usuarioRepository.buscarPorId(usuarioId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + usuarioId));
+        Usuario usuarioAtual = usuarioRepository.buscarPorId(command.usuarioId())
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + command.usuarioId()));
 
         // Permissão: se não for ADMIN, só pode mexer em reservas próprias
         if (usuarioAtual.getPerfil() != UsuarioPerfil.ADMIN) {
@@ -62,15 +63,15 @@ public class ReservaCommandUseCase {
 
         if (repository.existeConflitoDeHorario(
                 recursoId,
-                dadosAtualizados.getDataHoraInicio(),
-                dadosAtualizados.getDataHoraFim(),
-                id,
+                command.dataHoraInicio(),
+                command.dataHoraFim(),
+                command.reservaId(),
                 ReservaStatus.ATIVA)) {
             throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
         }
 
         // Só permite reagendamento
-        existente.reagendar(dadosAtualizados.getDataHoraInicio(), dadosAtualizados.getDataHoraFim());
+        existente.reagendar(command.dataHoraInicio(), command.dataHoraFim());
 
         return repository.salvar(existente);
     }

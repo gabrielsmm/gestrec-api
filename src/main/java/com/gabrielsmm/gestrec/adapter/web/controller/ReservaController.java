@@ -5,8 +5,8 @@ import com.gabrielsmm.gestrec.adapter.web.dto.ReservaInsertRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaUpdateRequest;
 import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
-import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.reserva.ReservaCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.reserva.ReservaQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,8 +34,7 @@ public class ReservaController {
     @Operation(summary = "Criar reserva")
     public ResponseEntity<ReservaResponse> criar(@Valid @RequestBody ReservaInsertRequest req,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Reserva dados = mapper.toDomain(req);
-        Reserva criada = commandUseCase.criar(dados, userDetails.getId());
+        Reserva criada = commandUseCase.criar(mapper.toCommand(req, userDetails.getId()));
         return ResponseEntity
                 .created(URI.create("/api/reservas/" + criada.getId()))
                 .body(mapper.toResponse(criada));
@@ -47,8 +46,7 @@ public class ReservaController {
     public ResponseEntity<ReservaResponse> atualizar(@PathVariable Long id,
                                                      @Valid @RequestBody ReservaUpdateRequest req,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Reserva dadosAtualizados = mapper.toDomain(req);
-        Reserva salva = commandUseCase.atualizar(id, dadosAtualizados, userDetails.getId());
+        Reserva salva = commandUseCase.atualizar(mapper.toCommand(req, id, userDetails.getId()));
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
