@@ -10,6 +10,7 @@ public interface RecursoRepository {
     Recurso salvar(Recurso recurso);
     Optional<Recurso> buscarPorId(Long id);
     List<Recurso> buscarTodos();
+    List<Recurso> buscarComFiltros(Long tipoRecursoId, String nome, String localizacao, Boolean ativo);
     void excluirPorId(Long id);
     boolean existePorId(Long id);
     boolean existePorNome(String nome);

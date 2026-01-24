@@ -10,53 +10,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class JpaRecursoRepositoryAdapter implements RecursoRepository {
 
     private final SpringDataRecursoRepo repo;
     private final RecursoEntityMapper mapper;
-//    private final SpringDataTipoRecursoRepo tipoRepo;
-//
-//    private Recurso toDomain(RecursoEntity e) {
-//        if (e == null) return null;
-//        TipoRecurso tipo = null;
-//        if (e.getTipoRecurso() != null) {
-//            tipo = new TipoRecurso(e.getTipoRecurso().getId(), e.getTipoRecurso().getNome(), e.getTipoRecurso().getDescricao());
-//        }
-//        return new Recurso(
-//                e.getId(),
-//                e.getNome(),
-//                e.getLocalizacao(),
-//                e.isAtivo(),
-//                tipo
-//        );
-//    }
-//
-//    private RecursoEntity toEntity(Recurso r) {
-//        if (r == null) return null;
-//
-//        RecursoEntity e = new RecursoEntity();
-//        e.setId(r.getId());
-//        e.setNome(r.getNome());
-//        e.setLocalizacao(r.getLocalizacao());
-//        e.setAtivo(r.isAtivo());
-//
-//        if (r.getTipoRecurso() != null) {
-//            Long tipoId = r.getTipoRecurso().getId();
-//            if (tipoId == null) {
-//                throw new IllegalArgumentException("TipoRecurso deve possuir ID");
-//            }
-//
-//            TipoRecursoEntity tr = tipoRepo.findById(tipoId)
-//                    .orElseThrow(() -> new EntidadeNaoEncontradaException("TipoRecurso não encontrado: id=" + tipoId));
-//
-//            e.setTipoRecurso(tr);
-//        }
-//
-//        return e;
-//    }
 
     @Override
     public Recurso salvar(Recurso recurso) {
@@ -75,7 +34,14 @@ public class JpaRecursoRepositoryAdapter implements RecursoRepository {
 
     @Override
     public List<Recurso> buscarTodos() {
-        return repo.findAll().stream().map(mapper::toDomain).collect(Collectors.toList());
+        return repo.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Recurso> buscarComFiltros(Long tipoRecursoId, String nome, String localizacao, Boolean ativo) {
+        return repo.findComFiltros(tipoRecursoId, nome, localizacao, ativo).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override

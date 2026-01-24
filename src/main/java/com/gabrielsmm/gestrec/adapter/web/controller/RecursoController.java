@@ -7,6 +7,7 @@ import com.gabrielsmm.gestrec.application.usecase.RecursoCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.RecursoQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/recursos")
@@ -53,12 +53,33 @@ public class RecursoController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todos os recursos")
-    public ResponseEntity<List<RecursoResponse>> buscarTodos() {
-        List<RecursoResponse> list = queryUseCase.buscarTodos().stream()
+    @Operation(summary = "Listar recursos com filtros opcionais",
+               description = "Busca recursos aplicando filtros opcionais: tipoRecursoId, nome (parcial), localizacao (parcial), ativo")
+    public ResponseEntity<List<RecursoResponse>> listar(
+            @Parameter(description = "ID do tipo de recurso")
+            @RequestParam(required = false) Long tipoRecursoId,
+            @Parameter(description = "Nome do recurso (busca parcial)")
+            @RequestParam(required = false) String nome,
+            @Parameter(description = "Localização do recurso (busca parcial)")
+            @RequestParam(required = false) String localizacao,
+            @Parameter(description = "Filtrar por recursos ativos ou inativos")
+            @RequestParam(required = false) Boolean ativo
+    ) {
+        // Se tiver qualquer filtro, usa busca com filtros
+        if (tipoRecursoId != null || nome != null || localizacao != null || ativo != null) {
+            List<RecursoResponse> lista = queryUseCase.buscarComFiltros(tipoRecursoId, nome, localizacao, ativo)
+                    .stream()
+                    .map(mapper::toResponse)
+                    .toList();
+            return ResponseEntity.ok(lista);
+        }
+
+        // Sem filtros, retorna todos
+        List<RecursoResponse> lista = queryUseCase.buscarTodos()
+                .stream()
                 .map(mapper::toResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(list);
+                .toList();
+        return ResponseEntity.ok(lista);
     }
 
     @DeleteMapping("/{id}")

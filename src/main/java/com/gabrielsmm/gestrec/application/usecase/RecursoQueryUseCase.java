@@ -24,4 +24,9 @@ public class RecursoQueryUseCase {
         return repository.buscarTodos();
     }
 
+    @Transactional(readOnly = true)
+    public List<Recurso> buscarComFiltros(Long tipoRecursoId, String nome, String localizacao, Boolean ativo) {
+        return repository.buscarComFiltros(tipoRecursoId, nome, localizacao, ativo);
+    }
+
 }
