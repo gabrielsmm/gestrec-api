@@ -29,7 +29,7 @@ A arquitetura segue os princípios da **Clean Architecture**, organizando o sist
 
 ### Camadas
 - **Domain**: contém o modelo de domínio e regras de negócio centrais, sem dependência de frameworks.
-- **Application (Use Cases)**: orquestra os casos de uso e aplica regras de negócio de forma coordenada.
+- **Application (Use Cases)**: orquestra os casos de uso e coordena a aplicação das regras de negócio definidas no domínio.
 - **Adapters**: fazem a adaptação entre o mundo externo (HTTP, banco de dados, segurança) e o domínio.
 - **Infrastructure**: concentra configurações técnicas e integração com frameworks.
 
@@ -86,7 +86,7 @@ A arquitetura segue os princípios da **Clean Architecture**, organizando o sist
 2. Cadastro de recursos
 3. Criação de reservas
 4. Cancelamento de reservas
-5. Consulta de reservas por recurso e período
+5. Consulta de reservas com filtros combináveis (recurso, período, usuário, status)
 6. Autenticação de usuários via JWT
 7. Autorização baseada em perfil de usuário
 8. Proteção de endpoints sensíveis
@@ -106,6 +106,7 @@ A aplicação utiliza autenticação baseada em JWT (JSON Web Token).
 - O login gera um token de acesso
 - O token deve ser enviado no header `Authorization`
 - O controle de acesso é realizado com base no perfil do usuário
+- Usuários comuns podem manipular apenas suas próprias reservas, enquanto administradores possuem acesso ampliado
 - A segurança é integrada ao Spring Security
 
 ---
