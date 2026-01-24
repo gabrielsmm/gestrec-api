@@ -68,4 +68,18 @@ public class RecursoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/ativar")
+    @Operation(summary = "Ativar recurso")
+    public ResponseEntity<RecursoResponse> ativar(@PathVariable Long id) {
+        Recurso ativado = commandUseCase.ativar(id);
+        return ResponseEntity.ok(mapper.toResponse(ativado));
+    }
+
+    @PatchMapping("/{id}/desativar")
+    @Operation(summary = "Desativar recurso")
+    public ResponseEntity<RecursoResponse> desativar(@PathVariable Long id) {
+        Recurso desativado = commandUseCase.desativar(id);
+        return ResponseEntity.ok(mapper.toResponse(desativado));
+    }
+
 }

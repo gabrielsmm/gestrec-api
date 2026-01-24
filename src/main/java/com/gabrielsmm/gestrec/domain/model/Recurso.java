@@ -1,6 +1,7 @@
 package com.gabrielsmm.gestrec.domain.model;
 
 import com.gabrielsmm.gestrec.domain.exception.business.EntidadeInvalidaException;
+import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -88,10 +89,16 @@ public class Recurso {
     }
 
     public void ativar() {
+        if (this.ativo) {
+            throw new RegraNegocioException("Recurso já está ativo");
+        }
         this.ativo = true;
     }
 
     public void desativar() {
+        if (!this.ativo) {
+            throw new RegraNegocioException("Recurso já está inativo");
+        }
         this.ativo = false;
     }
 

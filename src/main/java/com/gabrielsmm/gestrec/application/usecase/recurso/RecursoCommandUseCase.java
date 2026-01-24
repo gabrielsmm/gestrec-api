@@ -56,4 +56,24 @@ public class RecursoCommandUseCase {
         repository.excluirPorId(id);
     }
 
+    @Transactional
+    public Recurso ativar(Long id) {
+        Recurso recurso = repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
+
+        recurso.ativar();
+
+        return repository.salvar(recurso);
+    }
+
+    @Transactional
+    public Recurso desativar(Long id) {
+        Recurso recurso = repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
+
+        recurso.desativar();
+
+        return repository.salvar(recurso);
+    }
+
 }
