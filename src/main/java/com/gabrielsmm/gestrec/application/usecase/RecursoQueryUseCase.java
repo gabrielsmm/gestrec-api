@@ -3,6 +3,8 @@ package com.gabrielsmm.gestrec.application.usecase;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,8 @@ public class RecursoQueryUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<Recurso> buscarComFiltros(Long tipoRecursoId, String nome, String localizacao, Boolean ativo) {
-        return repository.buscarComFiltros(tipoRecursoId, nome, localizacao, ativo);
+    public Pagina<Recurso> buscarComFiltrosPaginado(Long tipoRecursoId, String nome, String localizacao, Boolean ativo, ParametrosPaginacao paginacao) {
+        return repository.buscarComFiltrosPaginado(tipoRecursoId, nome, localizacao, ativo, paginacao);
     }
 
 }

@@ -2,10 +2,10 @@ package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
-import com.gabrielsmm.gestrec.shared.pagination.Pagina;
-import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,9 +1,9 @@
 package com.gabrielsmm.gestrec.application.port.repository;
 
-import com.gabrielsmm.gestrec.shared.pagination.Pagina;
-import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,11 +1,14 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
+import com.gabrielsmm.gestrec.adapter.web.dto.PaginaResponse;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.RecursoResponse;
 import com.gabrielsmm.gestrec.adapter.web.mapper.RecursoDTOMapper;
 import com.gabrielsmm.gestrec.application.usecase.RecursoCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.RecursoQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,9 +56,10 @@ public class RecursoController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar recursos com filtros opcionais",
-               description = "Busca recursos aplicando filtros opcionais: tipoRecursoId, nome (parcial), localizacao (parcial), ativo")
-    public ResponseEntity<List<RecursoResponse>> listar(
+    @Operation(summary = "Listar recursos com filtros opcionais e paginação",
+               description = "Busca recursos aplicando filtros opcionais: tipoRecursoId, nome (parcial), localizacao (parcial), ativo. " +
+                       "Suporta paginação através dos parâmetros page e size.")
+    public ResponseEntity<PaginaResponse<RecursoResponse>> listar(
             @Parameter(description = "ID do tipo de recurso")
             @RequestParam(required = false) Long tipoRecursoId,
             @Parameter(description = "Nome do recurso (busca parcial)")
@@ -63,23 +67,19 @@ public class RecursoController {
             @Parameter(description = "Localização do recurso (busca parcial)")
             @RequestParam(required = false) String localizacao,
             @Parameter(description = "Filtrar por recursos ativos ou inativos")
-            @RequestParam(required = false) Boolean ativo
+            @RequestParam(required = false) Boolean ativo,
+            @Parameter(description = "Número da página (padrão: 0)")
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @Parameter(description = "Tamanho da página (padrão: 20, máximo: 100)")
+            @RequestParam(required = false, defaultValue = "20") Integer size
     ) {
-        // Se tiver qualquer filtro, usa busca com filtros
-        if (tipoRecursoId != null || nome != null || localizacao != null || ativo != null) {
-            List<RecursoResponse> lista = queryUseCase.buscarComFiltros(tipoRecursoId, nome, localizacao, ativo)
-                    .stream()
-                    .map(mapper::toResponse)
-                    .toList();
-            return ResponseEntity.ok(lista);
-        }
+        ParametrosPaginacao paginacao = ParametrosPaginacao.of(page, size);
 
-        // Sem filtros, retorna todos
-        List<RecursoResponse> lista = queryUseCase.buscarTodos()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
-        return ResponseEntity.ok(lista);
+        Pagina<Recurso> paginaRecursos = queryUseCase.buscarComFiltrosPaginado(
+                tipoRecursoId, nome, localizacao, ativo, paginacao
+        );
+
+        return ResponseEntity.ok(toPaginaResponse(paginaRecursos));
     }
 
     @DeleteMapping("/{id}")
@@ -101,6 +101,24 @@ public class RecursoController {
     public ResponseEntity<RecursoResponse> desativar(@PathVariable Long id) {
         Recurso desativado = commandUseCase.desativar(id);
         return ResponseEntity.ok(mapper.toResponse(desativado));
+    }
+
+    private PaginaResponse<RecursoResponse> toPaginaResponse(Pagina<Recurso> pagina) {
+        List<RecursoResponse> conteudo = pagina.conteudo().stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return new PaginaResponse<>(
+                conteudo,
+                pagina.numeroPagina(),
+                pagina.tamanhoPagina(),
+                pagina.totalElementos(),
+                pagina.totalPaginas(),
+                pagina.isPrimeira(),
+                pagina.isUltima(),
+                pagina.temProxima(),
+                pagina.temAnterior()
+        );
     }
 
 }

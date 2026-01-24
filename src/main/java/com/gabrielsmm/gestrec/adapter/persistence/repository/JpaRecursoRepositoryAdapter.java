@@ -5,8 +5,14 @@ import com.gabrielsmm.gestrec.adapter.persistence.mapper.RecursoEntityMapper;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,10 +44,14 @@ public class JpaRecursoRepositoryAdapter implements RecursoRepository {
     }
 
     @Override
-    public List<Recurso> buscarComFiltros(Long tipoRecursoId, String nome, String localizacao, Boolean ativo) {
-        return repo.findComFiltros(tipoRecursoId, nome, localizacao, ativo).stream()
-                .map(mapper::toDomain)
-                .toList();
+    public Pagina<Recurso> buscarComFiltrosPaginado(Long tipoRecursoId, String nome, String localizacao, Boolean ativo, ParametrosPaginacao paginacao) {
+        Pageable pageable = PageRequest.of(
+                paginacao.numeroPagina(),
+                paginacao.tamanhoPagina(),
+                Sort.by("nome").ascending()
+        );
+        Page<RecursoEntity> page = repo.findComFiltrosPaginado(tipoRecursoId, nome, localizacao, ativo, pageable);
+        return toPagina(page);
     }
 
     @Override
@@ -62,6 +72,20 @@ public class JpaRecursoRepositoryAdapter implements RecursoRepository {
     @Override
     public boolean existePorNomeIgnorandoId(String nome, Long id) {
         return repo.existsByNomeIgnoreCaseAndIdNot(nome, id);
+    }
+
+    private Pagina<Recurso> toPagina(Page<RecursoEntity> page) {
+        List<Recurso> conteudo = page.getContent().stream()
+                .map(mapper::toDomain)
+                .toList();
+
+        return new Pagina<>(
+                conteudo,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
 }
