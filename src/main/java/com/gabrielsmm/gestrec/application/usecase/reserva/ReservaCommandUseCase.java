@@ -18,20 +18,10 @@ public class ReservaCommandUseCase {
 
     @Transactional
     public Reserva criar(CriarReservaCommand command) {
-        Recurso recurso = recursoRepository.buscarPorId(command.recursoId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + command.recursoId()));
+        Recurso recurso = buscarRecursoPorId(command.recursoId());
+        Usuario usuario = buscarUsuarioPorId(command.usuarioId());
 
-        Usuario usuario = usuarioRepository.buscarPorId(command.usuarioId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + command.usuarioId()));
-
-        if (repository.existeConflitoDeHorario(
-                command.recursoId(),
-                command.dataHoraInicio(),
-                command.dataHoraFim(),
-                null,
-                ReservaStatus.ATIVA)) {
-            throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
-        }
+        validarConflitoDeHorario(command.recursoId(), command.dataHoraInicio(), command.dataHoraFim(), null);
 
         Reserva reserva = Reserva.criarNova(recurso, usuario, command.dataHoraInicio(), command.dataHoraFim());
 
@@ -40,18 +30,10 @@ public class ReservaCommandUseCase {
 
     @Transactional
     public Reserva atualizar(AtualizarReservaCommand command) {
-        Reserva existente = repository.buscarPorId(command.reservaId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + command.reservaId()));
+        Reserva existente = buscarReservaPorId(command.reservaId());
+        Usuario usuarioAtual = buscarUsuarioPorId(command.usuarioId());
 
-        Usuario usuarioAtual = usuarioRepository.buscarPorId(command.usuarioId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + command.usuarioId()));
-
-        // Permissão: se não for ADMIN, só pode mexer em reservas próprias
-        if (usuarioAtual.getPerfil() != UsuarioPerfil.ADMIN) {
-            if (existente.getUsuario() == null || !usuarioAtual.getId().equals(existente.getUsuario().getId())) {
-                throw new RegraNegocioException("Permissão negada");
-            }
-        }
+        validarPermissaoParaManipularReserva(existente, usuarioAtual);
 
         if (existente.getStatus() == ReservaStatus.CANCELADA) {
             throw new RegraNegocioException("Não é possível atualizar uma reserva cancelada");
@@ -59,16 +41,8 @@ public class ReservaCommandUseCase {
 
         Long recursoId = existente.getRecurso().getId();
 
-        if (repository.existeConflitoDeHorario(
-                recursoId,
-                command.dataHoraInicio(),
-                command.dataHoraFim(),
-                command.reservaId(),
-                ReservaStatus.ATIVA)) {
-            throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
-        }
+        validarConflitoDeHorario(recursoId, command.dataHoraInicio(), command.dataHoraFim(), command.reservaId());
 
-        // Só permite reagendamento
         existente.reagendar(command.dataHoraInicio(), command.dataHoraFim());
 
         return repository.salvar(existente);
@@ -76,37 +50,54 @@ public class ReservaCommandUseCase {
 
     @Transactional
     public void excluir(Long id, Long usuarioId) {
-        Reserva existente = repository.buscarPorId(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
+        Reserva existente = buscarReservaPorId(id);
+        Usuario usuarioAtual = buscarUsuarioPorId(usuarioId);
 
-        Usuario usuarioAtual = usuarioRepository.buscarPorId(usuarioId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + usuarioId));
-
-        if (usuarioAtual.getPerfil() != UsuarioPerfil.ADMIN) {
-            if (existente.getUsuario() == null || !usuarioAtual.getId().equals(existente.getUsuario().getId())) {
-                throw new RegraNegocioException("Permissão negada");
-            }
-        }
+        validarPermissaoParaManipularReserva(existente, usuarioAtual);
 
         repository.excluirPorId(id);
     }
 
     @Transactional
     public Reserva cancelar(Long id, Long usuarioId) {
-        Reserva existente = repository.buscarPorId(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
+        Reserva existente = buscarReservaPorId(id);
+        Usuario usuarioAtual = buscarUsuarioPorId(usuarioId);
 
-        Usuario usuarioAtual = usuarioRepository.buscarPorId(usuarioId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + usuarioId));
-
-        if (usuarioAtual.getPerfil() != UsuarioPerfil.ADMIN) {
-            if (existente.getUsuario() == null || !usuarioAtual.getId().equals(existente.getUsuario().getId())) {
-                throw new RegraNegocioException("Permissão negada");
-            }
-        }
+        validarPermissaoParaManipularReserva(existente, usuarioAtual);
 
         existente.cancelar();
         return repository.salvar(existente);
+    }
+
+    // ===== Métodos auxiliares =====
+    private Reserva buscarReservaPorId(Long id) {
+        return repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Reserva não encontrada com id: " + id));
+    }
+
+    private Recurso buscarRecursoPorId(Long id) {
+        return recursoRepository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Recurso não encontrado com id: " + id));
+    }
+
+    private Usuario buscarUsuarioPorId(Long id) {
+        return usuarioRepository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com id: " + id));
+    }
+
+    private void validarPermissaoParaManipularReserva(Reserva reserva, Usuario usuario) {
+        if (usuario.getPerfil() != UsuarioPerfil.ADMIN) {
+            if (reserva.getUsuario() == null || !usuario.getId().equals(reserva.getUsuario().getId())) {
+                throw new RegraNegocioException("Permissão negada");
+            }
+        }
+    }
+
+    private void validarConflitoDeHorario(Long recursoId, java.time.LocalDateTime dataHoraInicio,
+                                          java.time.LocalDateTime dataHoraFim, Long reservaIdExcluir) {
+        if (repository.existeConflitoDeHorario(recursoId, dataHoraInicio, dataHoraFim, reservaIdExcluir, ReservaStatus.ATIVA)) {
+            throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
+        }
     }
 
 }

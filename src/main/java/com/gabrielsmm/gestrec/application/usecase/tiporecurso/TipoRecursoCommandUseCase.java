@@ -14,10 +14,7 @@ public class TipoRecursoCommandUseCase {
 
     @Transactional
     public TipoRecurso criar(CriarTipoRecursoCommand command) {
-        // valida regra de unicidade de nome
-        if (repository.existePorNome(command.nome())) {
-            throw new EntidadeDuplicadaException("Nome já existe: " + command.nome());
-        }
+        validarNomeDuplicado(command.nome(), null);
 
         TipoRecurso novo = TipoRecurso.criarNovo(command.nome(), command.descricao());
 
@@ -26,13 +23,8 @@ public class TipoRecursoCommandUseCase {
 
     @Transactional
     public TipoRecurso atualizar(AtualizarTipoRecursoCommand command) {
-        TipoRecurso existente = repository.buscarPorId(command.tipoRecursoId())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + command.tipoRecursoId()));
-
-        // valida unicidade ignorando o próprio id
-        if (repository.existePorNomeIgnorandoId(command.nome(), command.tipoRecursoId())) {
-            throw new EntidadeDuplicadaException("Nome já existe: " + command.nome());
-        }
+        TipoRecurso existente = buscarTipoRecursoPorId(command.tipoRecursoId());
+        validarNomeDuplicado(command.nome(), command.tipoRecursoId());
 
         existente.renomear(command.nome());
         existente.alterarDescricao(command.descricao());
@@ -46,6 +38,22 @@ public class TipoRecursoCommandUseCase {
             throw new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id);
         }
         repository.excluirPorId(id);
+    }
+
+    // ===== Métodos auxiliares =====
+    private TipoRecurso buscarTipoRecursoPorId(Long id) {
+        return repository.buscarPorId(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Tipo de Recurso não encontrado com id: " + id));
+    }
+
+    private void validarNomeDuplicado(String nome, Long idExcluir) {
+        boolean duplicado = (idExcluir == null)
+                ? repository.existePorNome(nome)
+                : repository.existePorNomeIgnorandoId(nome, idExcluir);
+
+        if (duplicado) {
+            throw new EntidadeDuplicadaException("Nome já existe: " + nome);
+        }
     }
 
 }
