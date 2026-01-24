@@ -37,7 +37,7 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
 
     @Override
     public List<Reserva> buscarTodos() {
-        return repo.findAll().stream().map(mapper::toDomain).collect(Collectors.toList());
+        return repo.findAll().stream().map(mapper::toDomain).toList();
     }
 
     @Override
@@ -59,7 +59,13 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
     @Override
     public List<Reserva> buscarPorUsuario(Long usuarioId) {
         return repo.findByUsuarioId(usuarioId).stream()
-                .map(mapper::toDomain).collect(Collectors.toList());
+                .map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId) {
+        return repo.findComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId).stream()
+                .map(mapper::toDomain).toList();
     }
 
     @Override

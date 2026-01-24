@@ -9,15 +9,18 @@ import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -59,17 +62,34 @@ public class ReservaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar reservas (use 'me=true' para apenas minhas reservas)")
-    public ResponseEntity<List<ReservaResponse>> buscarTodos(@RequestParam(name = "me", required = false) Boolean apenasMeu,
-                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<ReservaResponse> lista;
-        if (Boolean.TRUE.equals(apenasMeu)) {
-            lista = queryUseCase.buscarPorUsuario(userDetails.getId()).stream()
-                    .map(mapper::toResponse).toList();
-        } else {
-            lista = queryUseCase.buscarTodos().stream()
-                    .map(mapper::toResponse).toList();
+    @Operation(summary = "Listar reservas com filtros opcionais",
+               description = "Busca reservas aplicando filtros opcionais: recursoId, período (inicio+fim), me=true para minhas reservas")
+    public ResponseEntity<List<ReservaResponse>> listar(
+            @Parameter(description = "ID do recurso")
+            @RequestParam(required = false) Long recursoId,
+            @Parameter(description = "Data/hora início do período (formato ISO-8601)")
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
+            @Parameter(description = "Data/hora fim do período (formato ISO-8601)")
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fim,
+            @Parameter(description = "Filtrar apenas minhas reservas")
+            @RequestParam(required = false) Boolean me,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        // Se tiver qualquer filtro, usa busca com filtros
+        if (recursoId != null || inicio != null || fim != null || Boolean.TRUE.equals(me)) {
+            Long usuarioIdFiltro = Boolean.TRUE.equals(me) ? userDetails.getId() : null;
+            List<ReservaResponse> lista = queryUseCase.buscarComFiltros(recursoId, inicio, fim, usuarioIdFiltro)
+                    .stream()
+                    .map(mapper::toResponse)
+                    .toList();
+            return ResponseEntity.ok(lista);
         }
+
+        // Sem filtros, retorna todas
+        List<ReservaResponse> lista = queryUseCase.buscarTodos()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
         return ResponseEntity.ok(lista);
     }
 

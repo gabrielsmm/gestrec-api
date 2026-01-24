@@ -6,6 +6,7 @@ import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,4 +30,10 @@ public class ReservaQueryUseCase {
         return repository.buscarPorUsuario(usuarioId);
     }
 
+    @Transactional(readOnly = true)
+    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId) {
+        return repository.buscarComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId);
+    }
+
 }
+

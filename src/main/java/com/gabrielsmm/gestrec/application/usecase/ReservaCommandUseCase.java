@@ -37,10 +37,6 @@ public class ReservaCommandUseCase {
 
         validarPermissaoParaManipularReserva(existente, usuarioAtual);
 
-        if (existente.getStatus() == ReservaStatus.CANCELADA) {
-            throw new RegraNegocioException("Não é possível atualizar uma reserva cancelada");
-        }
-
         Long recursoId = existente.getRecurso().getId();
 
         validarConflitoDeHorario(recursoId, command.dataHoraInicio(), command.dataHoraFim(), command.reservaId());
