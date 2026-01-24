@@ -81,6 +81,9 @@ public class Reserva {
         if (!inicio.isBefore(fim)) {
             throw new RegraNegocioException("Data de início deve ser anterior à data de fim");
         }
+        if (inicio.isBefore(LocalDateTime.now())) {
+            throw new RegraNegocioException("Não é permitido fazer reservas no passado");
+        }
     }
 
     // Regras de negócio

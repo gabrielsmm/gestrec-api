@@ -96,6 +96,7 @@ A arquitetura segue os princípios da **Clean Architecture**, organizando o sist
 - Não permitir reservas com conflito de horário para o mesmo recurso
 - Recursos inativos não podem ser reservados
 - A data de início da reserva deve ser anterior à data de fim
+- Não permitir a criação de reservas com data/hora no passado
 - Apenas usuários autenticados podem realizar reservas
 - Determinadas operações são restritas a perfis específicos
 
