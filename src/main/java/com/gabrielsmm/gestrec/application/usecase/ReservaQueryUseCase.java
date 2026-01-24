@@ -2,6 +2,7 @@ package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
+import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,8 @@ public class ReservaQueryUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId) {
-        return repository.buscarComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId);
+    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status) {
+        return repository.buscarComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId, status);
     }
 
 }

@@ -12,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class JpaReservaRepositoryAdapter implements ReservaRepository {
@@ -63,8 +62,9 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
     }
 
     @Override
-    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId) {
-        return repo.findComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId).stream()
+    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status) {
+        Integer statusCodigo = status != null ? status.getCodigo() : null;
+        return repo.findComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId, statusCodigo).stream()
                 .map(mapper::toDomain).toList();
     }
 

@@ -8,6 +8,7 @@ import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
 import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
+import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,22 +64,26 @@ public class ReservaController {
 
     @GetMapping
     @Operation(summary = "Listar reservas com filtros opcionais",
-               description = "Busca reservas aplicando filtros opcionais: recursoId, período (inicio+fim), me=true para minhas reservas")
+               description = "Busca reservas aplicando filtros opcionais: recursoId, usuarioId, período (dataInicio+dataFim), status, me=true")
     public ResponseEntity<List<ReservaResponse>> listar(
             @Parameter(description = "ID do recurso")
             @RequestParam(required = false) Long recursoId,
+            @Parameter(description = "ID do usuário")
+            @RequestParam(required = false) Long usuarioId,
             @Parameter(description = "Data/hora início do período (formato ISO-8601)")
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
             @Parameter(description = "Data/hora fim do período (formato ISO-8601)")
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fim,
-            @Parameter(description = "Filtrar apenas minhas reservas")
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim,
+            @Parameter(description = "Status da reserva (ATIVA ou CANCELADA)")
+            @RequestParam(required = false) ReservaStatus status,
+            @Parameter(description = "Filtrar apenas minhas reservas (sobrescreve usuarioId)")
             @RequestParam(required = false) Boolean me,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         // Se tiver qualquer filtro, usa busca com filtros
-        if (recursoId != null || inicio != null || fim != null || Boolean.TRUE.equals(me)) {
-            Long usuarioIdFiltro = Boolean.TRUE.equals(me) ? userDetails.getId() : null;
-            List<ReservaResponse> lista = queryUseCase.buscarComFiltros(recursoId, inicio, fim, usuarioIdFiltro)
+        if (recursoId != null || dataInicio != null || dataFim != null || usuarioId != null || status != null || Boolean.TRUE.equals(me)) {
+            Long usuarioIdFiltro = Boolean.TRUE.equals(me) ? userDetails.getId() : usuarioId;
+            List<ReservaResponse> lista = queryUseCase.buscarComFiltros(recursoId, dataInicio, dataFim, usuarioIdFiltro, status)
                     .stream()
                     .map(mapper::toResponse)
                     .toList();

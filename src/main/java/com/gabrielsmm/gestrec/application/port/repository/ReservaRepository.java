@@ -13,7 +13,7 @@ public interface ReservaRepository {
     Optional<Reserva> buscarPorId(Long id);
     List<Reserva> buscarTodos();
     List<Reserva> buscarPorUsuario(Long usuarioId);
-    List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId);
+    List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status);
     void excluirPorId(Long id);
     boolean existePorId(Long id);
     boolean existePorIdEUsuarioId(Long id, Long usuarioId);
