@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.reserva;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Reserva;

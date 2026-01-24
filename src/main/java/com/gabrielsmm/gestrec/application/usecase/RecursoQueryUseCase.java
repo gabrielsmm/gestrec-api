@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.recurso;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;

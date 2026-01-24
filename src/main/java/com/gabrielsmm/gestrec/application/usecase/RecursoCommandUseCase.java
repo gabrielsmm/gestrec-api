@@ -1,7 +1,9 @@
-package com.gabrielsmm.gestrec.application.usecase.recurso;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.usecase.dto.AtualizarRecursoCommand;
+import com.gabrielsmm.gestrec.application.usecase.dto.CriarRecursoCommand;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;

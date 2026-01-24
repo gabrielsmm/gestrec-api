@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.auth;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;

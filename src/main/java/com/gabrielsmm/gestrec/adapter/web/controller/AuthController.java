@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 
 import com.gabrielsmm.gestrec.adapter.web.dto.LoginRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TokenResponse;
-import com.gabrielsmm.gestrec.application.usecase.auth.AuthCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.AuthCommandUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.recurso;
+package com.gabrielsmm.gestrec.application.usecase.dto;
 
 public record CriarRecursoCommand(
         String nome,

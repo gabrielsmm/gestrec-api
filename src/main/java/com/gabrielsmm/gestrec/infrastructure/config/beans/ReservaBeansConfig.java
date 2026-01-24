@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.infrastructure.config.app;
+package com.gabrielsmm.gestrec.infrastructure.config.beans;
 
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.ReservaEntityMapper;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaReservaRepositoryAdapter;
@@ -7,8 +7,8 @@ import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
-import com.gabrielsmm.gestrec.application.usecase.reserva.ReservaCommandUseCase;
-import com.gabrielsmm.gestrec.application.usecase.reserva.ReservaQueryUseCase;
+import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;

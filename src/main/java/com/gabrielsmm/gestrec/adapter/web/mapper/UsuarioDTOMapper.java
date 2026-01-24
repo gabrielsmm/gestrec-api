@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.web.mapper;
 
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
-import com.gabrielsmm.gestrec.application.usecase.usuario.CadastrarUsuarioCommand;
+import com.gabrielsmm.gestrec.application.usecase.dto.CadastrarUsuarioCommand;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import org.mapstruct.Mapper;
 

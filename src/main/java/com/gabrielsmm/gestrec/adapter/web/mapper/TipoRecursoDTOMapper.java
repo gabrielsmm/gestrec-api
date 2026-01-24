@@ -2,8 +2,8 @@ package com.gabrielsmm.gestrec.adapter.web.mapper;
 
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.TipoRecursoResponse;
-import com.gabrielsmm.gestrec.application.usecase.tiporecurso.AtualizarTipoRecursoCommand;
-import com.gabrielsmm.gestrec.application.usecase.tiporecurso.CriarTipoRecursoCommand;
+import com.gabrielsmm.gestrec.application.usecase.dto.AtualizarTipoRecursoCommand;
+import com.gabrielsmm.gestrec.application.usecase.dto.CriarTipoRecursoCommand;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import org.mapstruct.Mapper;
 

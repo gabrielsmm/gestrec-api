@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.web.controller;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.UsuarioResponse;
 import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
-import com.gabrielsmm.gestrec.application.usecase.usuario.UsuarioCommandUseCase;
+import com.gabrielsmm.gestrec.application.usecase.UsuarioCommandUseCase;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

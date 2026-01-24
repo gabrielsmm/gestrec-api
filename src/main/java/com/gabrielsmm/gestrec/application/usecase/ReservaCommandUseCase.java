@@ -1,8 +1,10 @@
-package com.gabrielsmm.gestrec.application.usecase.reserva;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.usecase.dto.AtualizarReservaCommand;
+import com.gabrielsmm.gestrec.application.usecase.dto.CriarReservaCommand;
 import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.*;

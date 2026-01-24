@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.reserva;
+package com.gabrielsmm.gestrec.application.usecase.dto;
 
 import java.time.LocalDateTime;
 

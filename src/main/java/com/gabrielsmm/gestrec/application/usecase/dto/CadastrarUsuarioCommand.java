@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.application.usecase.usuario;
+package com.gabrielsmm.gestrec.application.usecase.dto;
 
 public record CadastrarUsuarioCommand(
         String nome,

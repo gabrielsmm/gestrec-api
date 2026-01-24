@@ -1,7 +1,8 @@
-package com.gabrielsmm.gestrec.application.usecase.usuario;
+package com.gabrielsmm.gestrec.application.usecase;
 
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
+import com.gabrielsmm.gestrec.application.usecase.dto.CadastrarUsuarioCommand;
 import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;
