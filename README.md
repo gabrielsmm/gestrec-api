@@ -28,13 +28,14 @@ O sistema foi desenvolvido utilizando o estilo arquitetural **Monolítico**, org
 A arquitetura segue os princípios da **Clean Architecture**, organizando o sistema em camadas com dependências direcionadas para o núcleo do domínio.
 
 ### Camadas
-- **Domain**: contém o modelo de domínio e regras de negócio centrais, sem dependência de frameworks.
-- **Application (Use Cases)**: orquestra os casos de uso e coordena a aplicação das regras de negócio definidas no domínio.
+- **Domain**: contém o modelo de domínio e as regras de negócio invariantes, que sempre devem ser respeitadas, independentemente do fluxo de aplicação ou da interface utilizada.
+- **Application (Use Cases)**: orquestra os casos de uso do sistema, coordenando entidades do domínio e aplicando regras de negócio dependentes de contexto, que envolvem múltiplas entidades, acesso a repositórios e políticas de aplicação.
 - **Adapters**: fazem a adaptação entre o mundo externo (HTTP, banco de dados, segurança) e o domínio.
 - **Infrastructure**: concentra configurações técnicas e integração com frameworks.
 
 ### Diagrama Simplificado
 
+![Diagrama Simplificado](docs/diagrama-simplificado-gestrec.png)
 
 ---
 
