@@ -1,12 +1,15 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
 import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
+import com.gabrielsmm.gestrec.adapter.web.dto.PaginaResponse;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaInsertRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaUpdateRequest;
 import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
 import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,9 +66,10 @@ public class ReservaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar reservas com filtros opcionais",
-               description = "Busca reservas aplicando filtros opcionais: recursoId, usuarioId, período (dataInicio+dataFim), status, me=true")
-    public ResponseEntity<List<ReservaResponse>> listar(
+    @Operation(summary = "Listar reservas com filtros opcionais e paginação",
+               description = "Busca reservas aplicando filtros opcionais: recursoId, usuarioId, período (dataInicio+dataFim), status, me=true. " +
+                       "Suporta paginação através dos parâmetros page e size.")
+    public ResponseEntity<PaginaResponse<ReservaResponse>> listar(
             @Parameter(description = "ID do recurso")
             @RequestParam(required = false) Long recursoId,
             @Parameter(description = "ID do usuário")
@@ -78,24 +82,20 @@ public class ReservaController {
             @RequestParam(required = false) ReservaStatus status,
             @Parameter(description = "Filtrar apenas minhas reservas (sobrescreve usuarioId)")
             @RequestParam(required = false) Boolean me,
+            @Parameter(description = "Número da página (padrão: 0)")
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @Parameter(description = "Tamanho da página (padrão: 20, máximo: 100)")
+            @RequestParam(required = false, defaultValue = "20") Integer size,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        // Se tiver qualquer filtro, usa busca com filtros
-        if (recursoId != null || dataInicio != null || dataFim != null || usuarioId != null || status != null || Boolean.TRUE.equals(me)) {
-            Long usuarioIdFiltro = Boolean.TRUE.equals(me) ? userDetails.getId() : usuarioId;
-            List<ReservaResponse> lista = queryUseCase.buscarComFiltros(recursoId, dataInicio, dataFim, usuarioIdFiltro, status)
-                    .stream()
-                    .map(mapper::toResponse)
-                    .toList();
-            return ResponseEntity.ok(lista);
-        }
+        Long usuarioIdFiltro = Boolean.TRUE.equals(me) ? userDetails.getId() : usuarioId;
+        ParametrosPaginacao paginacao = ParametrosPaginacao.of(page, size);
 
-        // Sem filtros, retorna todas
-        List<ReservaResponse> lista = queryUseCase.buscarTodos()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
-        return ResponseEntity.ok(lista);
+        Pagina<Reserva> paginaReservas = queryUseCase.buscarComFiltrosPaginado(
+                recursoId, dataInicio, dataFim, usuarioIdFiltro, status, paginacao
+        );
+
+        return ResponseEntity.ok(toPaginaResponse(paginaReservas));
     }
 
     @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
@@ -114,6 +114,24 @@ public class ReservaController {
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Reserva cancelada = commandUseCase.cancelar(id, userDetails.getId());
         return ResponseEntity.ok(mapper.toResponse(cancelada));
+    }
+
+    private PaginaResponse<ReservaResponse> toPaginaResponse(Pagina<Reserva> pagina) {
+        List<ReservaResponse> conteudo = pagina.conteudo().stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return new PaginaResponse<>(
+                conteudo,
+                pagina.numeroPagina(),
+                pagina.tamanhoPagina(),
+                pagina.totalElementos(),
+                pagina.totalPaginas(),
+                pagina.isPrimeira(),
+                pagina.isUltima(),
+                pagina.temProxima(),
+                pagina.temAnterior()
+        );
     }
 
 }

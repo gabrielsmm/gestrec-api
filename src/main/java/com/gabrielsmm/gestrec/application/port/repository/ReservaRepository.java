@@ -1,5 +1,7 @@
 package com.gabrielsmm.gestrec.application.port.repository;
 
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 
@@ -13,7 +15,7 @@ public interface ReservaRepository {
     Optional<Reserva> buscarPorId(Long id);
     List<Reserva> buscarTodos();
     List<Reserva> buscarPorUsuario(Long usuarioId);
-    List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status);
+    Pagina<Reserva> buscarComFiltrosPaginado(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status, ParametrosPaginacao paginacao);
     void excluirPorId(Long id);
     boolean existePorId(Long id);
     boolean existePorIdEUsuarioId(Long id, Long usuarioId);

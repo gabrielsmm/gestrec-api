@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.domain.exception.technical;
+package com.gabrielsmm.gestrec.domain.exception;
 
 public class EntidadeNaoEncontradaException extends RuntimeException {
 

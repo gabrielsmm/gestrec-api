@@ -3,11 +3,17 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.ReservaEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.ReservaEntityMapper;
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
-import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.shared.pagination.Pagina;
+import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,15 +68,34 @@ public class JpaReservaRepositoryAdapter implements ReservaRepository {
     }
 
     @Override
-    public List<Reserva> buscarComFiltros(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status) {
+    public Pagina<Reserva> buscarComFiltrosPaginado(Long recursoId, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, Long usuarioId, ReservaStatus status, ParametrosPaginacao paginacao) {
         Integer statusCodigo = status != null ? status.getCodigo() : null;
-        return repo.findComFiltros(recursoId, dataHoraInicio, dataHoraFim, usuarioId, statusCodigo).stream()
-                .map(mapper::toDomain).toList();
+        Pageable pageable = PageRequest.of(
+                paginacao.numeroPagina(),
+                paginacao.tamanhoPagina(),
+                Sort.by("dataHoraInicio").ascending()
+        );
+        Page<ReservaEntity> page = repo.findComFiltrosPaginado(recursoId, dataHoraInicio, dataHoraFim, usuarioId, statusCodigo, pageable);
+        return toPagina(page);
     }
 
     @Override
     public boolean existePorIdEUsuarioId(Long id, Long usuarioId) {
         return repo.existsByIdAndUsuarioId(id, usuarioId);
+    }
+
+    private Pagina<Reserva> toPagina(Page<ReservaEntity> page) {
+        List<Reserva> conteudo = page.getContent().stream()
+                .map(mapper::toDomain)
+                .toList();
+
+        return new Pagina<>(
+                conteudo,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
 }

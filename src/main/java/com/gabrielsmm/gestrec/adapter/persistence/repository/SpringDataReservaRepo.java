@@ -1,6 +1,8 @@
 package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
 import com.gabrielsmm.gestrec.adapter.persistence.entity.ReservaEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,14 +40,14 @@ public interface SpringDataReservaRepo extends JpaRepository<ReservaEntity, Long
           and (:status is null or r.status = :status)
           and (:dataHoraInicio is null or :dataHoraFim is null or
                (r.dataHoraInicio < :dataHoraFim and r.dataHoraFim > :dataHoraInicio))
-        order by r.dataHoraInicio
     """)
-    List<ReservaEntity> findComFiltros(
+    Page<ReservaEntity> findComFiltrosPaginado(
             @Param("recursoId") Long recursoId,
             @Param("dataHoraInicio") LocalDateTime dataHoraInicio,
             @Param("dataHoraFim") LocalDateTime dataHoraFim,
             @Param("usuarioId") Long usuarioId,
-            @Param("status") Integer status
+            @Param("status") Integer status,
+            Pageable pageable
     );
 
     boolean existsByIdAndUsuarioId(Long id, Long usuarioId);

@@ -3,7 +3,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.RecursoEntityMapper;
 import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

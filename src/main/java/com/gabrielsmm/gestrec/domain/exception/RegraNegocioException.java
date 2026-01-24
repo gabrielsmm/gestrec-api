@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.domain.exception.business;
+package com.gabrielsmm.gestrec.domain.exception;
 
 public class RegraNegocioException extends RuntimeException {
 

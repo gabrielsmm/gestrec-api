@@ -1,9 +1,9 @@
 package com.gabrielsmm.gestrec.adapter.web.exception;
 
-import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeDuplicadaException;
-import com.gabrielsmm.gestrec.domain.exception.business.EntidadeInvalidaException;
-import com.gabrielsmm.gestrec.domain.exception.technical.EntidadeNaoEncontradaException;
-import com.gabrielsmm.gestrec.domain.exception.business.RegraNegocioException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
+import com.gabrielsmm.gestrec.domain.exception.EntidadeInvalidaException;
+import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
