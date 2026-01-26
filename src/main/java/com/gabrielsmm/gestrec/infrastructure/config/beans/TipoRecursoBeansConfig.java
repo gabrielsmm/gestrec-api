@@ -4,7 +4,7 @@ import com.gabrielsmm.gestrec.adapter.persistence.mapper.TipoRecursoEntityMapper
 import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaTipoRecursoRepositoryAdapter;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataTipoRecursoRepo;
 import com.gabrielsmm.gestrec.adapter.web.mapper.TipoRecursoDTOMapper;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepositoryPort;
 import com.gabrielsmm.gestrec.application.usecase.TipoRecursoCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.TipoRecursoQueryUseCase;
 import org.mapstruct.factory.Mappers;
@@ -16,17 +16,17 @@ import org.springframework.context.annotation.Configuration;
 public class TipoRecursoBeansConfig {
 
     @Bean
-    public TipoRecursoCommandUseCase tipoRecursoCommandUseCase(TipoRecursoRepository repository) {
+    public TipoRecursoCommandUseCase tipoRecursoCommandUseCase(TipoRecursoRepositoryPort repository) {
         return new TipoRecursoCommandUseCase(repository);
     }
 
     @Bean
-    public TipoRecursoQueryUseCase tipoRecursoQueryUseCase(TipoRecursoRepository repository) {
+    public TipoRecursoQueryUseCase tipoRecursoQueryUseCase(TipoRecursoRepositoryPort repository) {
         return new TipoRecursoQueryUseCase(repository);
     }
 
     @Bean
-    public TipoRecursoRepository tipoRecursoRepository(SpringDataTipoRecursoRepo springDataTipoRecursoRepo, TipoRecursoEntityMapper tipoRecursoEntityMapper) {
+    public TipoRecursoRepositoryPort tipoRecursoRepository(SpringDataTipoRecursoRepo springDataTipoRecursoRepo, TipoRecursoEntityMapper tipoRecursoEntityMapper) {
         return new JpaTipoRecursoRepositoryAdapter(springDataTipoRecursoRepo, tipoRecursoEntityMapper);
     }
 

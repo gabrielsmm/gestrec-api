@@ -4,7 +4,7 @@ import com.gabrielsmm.gestrec.adapter.persistence.mapper.UsuarioEntityMapper;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaUsuarioRepositoryAdapter;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataUsuarioRepo;
 import com.gabrielsmm.gestrec.adapter.web.mapper.UsuarioDTOMapper;
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import com.gabrielsmm.gestrec.application.usecase.UsuarioCommandUseCase;
 import org.mapstruct.factory.Mappers;
@@ -16,12 +16,12 @@ import org.springframework.context.annotation.Configuration;
 public class UsuarioBeansConfig {
 
     @Bean
-    public UsuarioCommandUseCase usuarioCommandUseCase(UsuarioRepository repository, PasswordEncoderPort passwordEncoder) {
+    public UsuarioCommandUseCase usuarioCommandUseCase(UsuarioRepositoryPort repository, PasswordEncoderPort passwordEncoder) {
         return new UsuarioCommandUseCase(repository, passwordEncoder);
     }
 
     @Bean
-    public UsuarioRepository usuarioRepository(SpringDataUsuarioRepo springDataUsuarioRepo, UsuarioEntityMapper mapper) {
+    public UsuarioRepositoryPort usuarioRepository(SpringDataUsuarioRepo springDataUsuarioRepo, UsuarioEntityMapper mapper) {
         return new JpaUsuarioRepositoryAdapter(springDataUsuarioRepo, mapper);
     }
 

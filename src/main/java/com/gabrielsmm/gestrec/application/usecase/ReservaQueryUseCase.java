@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservaQueryUseCase {
 
-    private final ReservaRepository repository;
+    private final ReservaRepositoryPort repository;
 
     @Transactional(readOnly = true)
     public Reserva buscarPorId(Long id) {

@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
 import com.gabrielsmm.gestrec.adapter.persistence.entity.UsuarioEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.UsuarioEntityMapper;
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class JpaUsuarioRepositoryAdapter implements UsuarioRepository {
+public class JpaUsuarioRepositoryAdapter implements UsuarioRepositoryPort {
 
     private final SpringDataUsuarioRepo repo;
     private final UsuarioEntityMapper mapper;

@@ -5,7 +5,7 @@ import com.gabrielsmm.gestrec.domain.model.Usuario;
 import java.util.List;
 import java.util.Optional;
 
-public interface UsuarioRepository {
+public interface UsuarioRepositoryPort {
 
     Usuario salvar(Usuario usuario);
     Optional<Usuario> buscarPorId(Long id);

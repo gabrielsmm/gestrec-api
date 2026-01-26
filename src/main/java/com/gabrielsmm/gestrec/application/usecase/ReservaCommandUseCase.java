@@ -1,8 +1,8 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.usecase.dto.AtualizarReservaCommand;
 import com.gabrielsmm.gestrec.application.usecase.dto.CriarReservaCommand;
 import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReservaCommandUseCase {
 
-    private final ReservaRepository repository;
-    private final RecursoRepository recursoRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final ReservaRepositoryPort repository;
+    private final RecursoRepositoryPort recursoRepository;
+    private final UsuarioRepositoryPort usuarioRepository;
 
     @Transactional
     public Reserva criar(CriarReservaCommand command) {

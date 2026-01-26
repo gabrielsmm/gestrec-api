@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
 import com.gabrielsmm.gestrec.adapter.persistence.entity.RecursoEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.RecursoEntityMapper;
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.shared.pagination.Pagina;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JpaRecursoRepositoryAdapter implements RecursoRepository {
+public class JpaRecursoRepositoryAdapter implements RecursoRepositoryPort {
 
     private final SpringDataRecursoRepo repo;
     private final RecursoEntityMapper mapper;

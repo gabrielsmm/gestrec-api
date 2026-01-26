@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.security.jwt;
 
-import com.gabrielsmm.gestrec.application.port.service.TokenService;
+import com.gabrielsmm.gestrec.application.port.service.TokenServicePort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtTokenServiceAdapter implements TokenService {
+public class JwtTokenServiceAdapter implements TokenServicePort {
 
     @Value("${jwt.secret}")
     private String jwtSecret;

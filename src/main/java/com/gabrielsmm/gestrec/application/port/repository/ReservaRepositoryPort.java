@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReservaRepository {
+public interface ReservaRepositoryPort {
 
     Reserva salvar(Reserva reserva);
     Optional<Reserva> buscarPorId(Long id);

@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import com.gabrielsmm.gestrec.application.usecase.dto.CadastrarUsuarioCommand;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UsuarioCommandUseCase {
 
-    private final UsuarioRepository repository;
+    private final UsuarioRepositoryPort repository;
     private final PasswordEncoderPort passwordEncoder;
 
     @Transactional

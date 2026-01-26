@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.security.auth;
 
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepositoryPort usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

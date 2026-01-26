@@ -1,8 +1,8 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
-import com.gabrielsmm.gestrec.application.port.service.TokenService;
+import com.gabrielsmm.gestrec.application.port.service.TokenServicePort;
 import com.gabrielsmm.gestrec.domain.exception.RegraNegocioException;
 import com.gabrielsmm.gestrec.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthCommandUseCase {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepositoryPort usuarioRepository;
     private final PasswordEncoderPort passwordEncoder;
-    private final TokenService tokenService;
+    private final TokenServicePort tokenService;
 
     public String autenticar(String email, String senha) {
         Usuario usuario = usuarioRepository.buscarPorEmail(email)

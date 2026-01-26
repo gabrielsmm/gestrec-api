@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
 import com.gabrielsmm.gestrec.shared.pagination.Pagina;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecursoQueryUseCase {
 
-    private final RecursoRepository repository;
+    private final RecursoRepositoryPort repository;
 
     @Transactional(readOnly = true)
     public Recurso buscarPorId(Long id) {

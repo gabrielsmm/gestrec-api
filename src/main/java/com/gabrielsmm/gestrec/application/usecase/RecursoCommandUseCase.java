@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepositoryPort;
 import com.gabrielsmm.gestrec.application.usecase.dto.AtualizarRecursoCommand;
 import com.gabrielsmm.gestrec.application.usecase.dto.CriarRecursoCommand;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RecursoCommandUseCase {
 
-    private final RecursoRepository repository;
-    private final TipoRecursoRepository tipoRepository;
+    private final RecursoRepositoryPort repository;
+    private final TipoRecursoRepositoryPort tipoRepository;
 
     @Transactional
     public Recurso criar(CriarRecursoCommand command) {

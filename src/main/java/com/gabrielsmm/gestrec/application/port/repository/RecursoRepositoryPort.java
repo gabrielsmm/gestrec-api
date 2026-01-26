@@ -7,7 +7,7 @@ import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 import java.util.List;
 import java.util.Optional;
 
-public interface RecursoRepository {
+public interface RecursoRepositoryPort {
 
     Recurso salvar(Recurso recurso);
     Optional<Recurso> buscarPorId(Long id);

@@ -5,7 +5,7 @@ import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import java.util.List;
 import java.util.Optional;
 
-public interface TipoRecursoRepository {
+public interface TipoRecursoRepositoryPort {
 
     TipoRecurso salvar(TipoRecurso tipoRecurso);
     Optional<TipoRecurso> buscarPorId(Long id);

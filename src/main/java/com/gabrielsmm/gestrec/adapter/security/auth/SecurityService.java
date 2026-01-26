@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.security.auth;
 
-import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SecurityService {
 
-    private final ReservaRepository reservaRepository;
+    private final ReservaRepositoryPort reservaRepository;
 
     public boolean isOwner(Long reservaId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

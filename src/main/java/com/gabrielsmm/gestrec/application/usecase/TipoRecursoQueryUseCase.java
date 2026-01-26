@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.application.usecase;
 
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeNaoEncontradaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TipoRecursoQueryUseCase {
 
-    private final TipoRecursoRepository repository;
+    private final TipoRecursoRepositoryPort repository;
 
     @Transactional(readOnly = true)
     public TipoRecurso buscarPorId(Long id) {

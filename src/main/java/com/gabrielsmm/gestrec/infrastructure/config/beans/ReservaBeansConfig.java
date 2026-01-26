@@ -4,9 +4,9 @@ import com.gabrielsmm.gestrec.adapter.persistence.mapper.ReservaEntityMapper;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaReservaRepositoryAdapter;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataReservaRepo;
 import com.gabrielsmm.gestrec.adapter.web.mapper.ReservaDTOMapper;
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
-import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.usecase.ReservaCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.ReservaQueryUseCase;
 import org.mapstruct.factory.Mappers;
@@ -19,20 +19,20 @@ public class ReservaBeansConfig {
 
     @Bean
     public ReservaCommandUseCase reservaCommandUseCase(
-            ReservaRepository reservaRepository,
-            RecursoRepository recursoRepository,
-            UsuarioRepository usuarioRepository
+            ReservaRepositoryPort reservaRepository,
+            RecursoRepositoryPort recursoRepository,
+            UsuarioRepositoryPort usuarioRepository
     ) {
         return new ReservaCommandUseCase(reservaRepository, recursoRepository, usuarioRepository);
     }
 
     @Bean
-    public ReservaQueryUseCase reservaQueryUseCase(ReservaRepository reservaRepository) {
+    public ReservaQueryUseCase reservaQueryUseCase(ReservaRepositoryPort reservaRepository) {
         return new ReservaQueryUseCase(reservaRepository);
     }
 
     @Bean
-    public ReservaRepository reservaRepository(SpringDataReservaRepo springDataReservaRepo, ReservaEntityMapper reservaEntityMapper) {
+    public ReservaRepositoryPort reservaRepository(SpringDataReservaRepo springDataReservaRepo, ReservaEntityMapper reservaEntityMapper) {
         return new JpaReservaRepositoryAdapter(springDataReservaRepo, reservaEntityMapper);
     }
 

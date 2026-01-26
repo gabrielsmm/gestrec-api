@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
 import com.gabrielsmm.gestrec.adapter.persistence.entity.TipoRecursoEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.TipoRecursoEntityMapper;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.TipoRecurso;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepository {
+public class JpaTipoRecursoRepositoryAdapter implements TipoRecursoRepositoryPort {
 
     private final SpringDataTipoRecursoRepo repo;
     private final TipoRecursoEntityMapper mapper;

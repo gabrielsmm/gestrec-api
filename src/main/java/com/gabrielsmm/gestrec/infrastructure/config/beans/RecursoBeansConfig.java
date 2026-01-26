@@ -4,8 +4,8 @@ import com.gabrielsmm.gestrec.adapter.persistence.mapper.RecursoEntityMapper;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.JpaRecursoRepositoryAdapter;
 import com.gabrielsmm.gestrec.adapter.persistence.repository.SpringDataRecursoRepo;
 import com.gabrielsmm.gestrec.adapter.web.mapper.RecursoDTOMapper;
-import com.gabrielsmm.gestrec.application.port.repository.RecursoRepository;
-import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepository;
+import com.gabrielsmm.gestrec.application.port.repository.RecursoRepositoryPort;
+import com.gabrielsmm.gestrec.application.port.repository.TipoRecursoRepositoryPort;
 import com.gabrielsmm.gestrec.application.usecase.RecursoCommandUseCase;
 import com.gabrielsmm.gestrec.application.usecase.RecursoQueryUseCase;
 import org.mapstruct.factory.Mappers;
@@ -18,19 +18,19 @@ public class RecursoBeansConfig {
 
     @Bean
     public RecursoCommandUseCase recursoCommandUseCase(
-            RecursoRepository recursoRepository,
-            TipoRecursoRepository tipoRecursoRepository
+            RecursoRepositoryPort recursoRepository,
+            TipoRecursoRepositoryPort tipoRecursoRepository
     ) {
         return new RecursoCommandUseCase(recursoRepository, tipoRecursoRepository);
     }
 
     @Bean
-    public RecursoQueryUseCase recursoQueryUseCase(RecursoRepository recursoRepository) {
+    public RecursoQueryUseCase recursoQueryUseCase(RecursoRepositoryPort recursoRepository) {
         return new RecursoQueryUseCase(recursoRepository);
     }
 
     @Bean
-    public RecursoRepository recursoRepository(SpringDataRecursoRepo springDataRecursoRepo, RecursoEntityMapper recursoEntityMapper) {
+    public RecursoRepositoryPort recursoRepository(SpringDataRecursoRepo springDataRecursoRepo, RecursoEntityMapper recursoEntityMapper) {
         return new JpaRecursoRepositoryAdapter(springDataRecursoRepo, recursoEntityMapper);
     }
 

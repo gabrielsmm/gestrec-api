@@ -2,7 +2,7 @@ package com.gabrielsmm.gestrec.adapter.persistence.repository;
 
 import com.gabrielsmm.gestrec.adapter.persistence.entity.ReservaEntity;
 import com.gabrielsmm.gestrec.adapter.persistence.mapper.ReservaEntityMapper;
-import com.gabrielsmm.gestrec.application.port.repository.ReservaRepository;
+import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
 import com.gabrielsmm.gestrec.domain.exception.EntidadeDuplicadaException;
 import com.gabrielsmm.gestrec.domain.model.Reserva;
 import com.gabrielsmm.gestrec.domain.model.ReservaStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JpaReservaRepositoryAdapter implements ReservaRepository {
+public class JpaReservaRepositoryAdapter implements ReservaRepositoryPort {
 
     private final SpringDataReservaRepo repo;
     private final ReservaEntityMapper mapper;
