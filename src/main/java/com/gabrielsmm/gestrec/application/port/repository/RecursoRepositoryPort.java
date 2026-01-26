@@ -1,8 +1,8 @@
 package com.gabrielsmm.gestrec.application.port.repository;
 
+import com.gabrielsmm.gestrec.domain.model.Pagina;
+import com.gabrielsmm.gestrec.domain.model.ParametrosPaginacao;
 import com.gabrielsmm.gestrec.domain.model.Recurso;
-import com.gabrielsmm.gestrec.shared.pagination.Pagina;
-import com.gabrielsmm.gestrec.shared.pagination.ParametrosPaginacao;
 
 import java.util.List;
 import java.util.Optional;

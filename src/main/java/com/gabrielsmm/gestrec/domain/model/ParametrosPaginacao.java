@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.shared.pagination;
+package com.gabrielsmm.gestrec.domain.model;
 
 public record ParametrosPaginacao(
         int numeroPagina,
