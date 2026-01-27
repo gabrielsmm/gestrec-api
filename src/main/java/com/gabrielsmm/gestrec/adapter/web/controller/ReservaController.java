@@ -57,7 +57,6 @@ public class ReservaController {
         return ResponseEntity.ok(mapper.toResponse(salva));
     }
 
-    @PreAuthorize("@securityService.isOwner(#id) or hasRole('ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Buscar reserva por id")
     public ResponseEntity<ReservaResponse> buscarPorId(@PathVariable Long id) {
