@@ -94,7 +94,7 @@ public class ReservaCommandUseCase {
     private void validarConflitoDeHorario(Long recursoId, java.time.LocalDateTime dataHoraInicio,
                                           java.time.LocalDateTime dataHoraFim, Long reservaIdExcluir) {
         if (repository.existeConflitoDeHorario(recursoId, dataHoraInicio, dataHoraFim, reservaIdExcluir, ReservaStatus.ATIVA)) {
-            throw new RegraNegocioException("Já existe uma reserva ativa para o recurso nesse horário");
+            throw new RegraNegocioException("Já existe uma reserva ativa para o recurso dentro do período informado");
         }
     }
 
