@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.adapter.security.auth;
+package com.gabrielsmm.gestrec.infrastructure.security.auth;
 
 import com.gabrielsmm.gestrec.application.port.repository.ReservaRepositoryPort;
 import lombok.RequiredArgsConstructor;

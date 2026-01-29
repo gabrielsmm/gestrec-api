@@ -1,6 +1,6 @@
 package com.gabrielsmm.gestrec.adapter.web.controller;
 
-import com.gabrielsmm.gestrec.adapter.security.auth.UserDetailsImpl;
+import com.gabrielsmm.gestrec.infrastructure.security.auth.UserDetailsImpl;
 import com.gabrielsmm.gestrec.adapter.web.dto.PaginaResponse;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaInsertRequest;
 import com.gabrielsmm.gestrec.adapter.web.dto.ReservaResponse;

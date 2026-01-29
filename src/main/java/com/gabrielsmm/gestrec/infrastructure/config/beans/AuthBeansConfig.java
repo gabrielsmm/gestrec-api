@@ -1,7 +1,7 @@
 package com.gabrielsmm.gestrec.infrastructure.config.beans;
 
-import com.gabrielsmm.gestrec.adapter.security.BCryptPasswordEncoderAdapter;
-import com.gabrielsmm.gestrec.adapter.security.jwt.JwtTokenServiceAdapter;
+import com.gabrielsmm.gestrec.infrastructure.security.BCryptPasswordEncoderAdapter;
+import com.gabrielsmm.gestrec.infrastructure.security.jwt.JwtTokenServiceAdapter;
 import com.gabrielsmm.gestrec.application.port.repository.UsuarioRepositoryPort;
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import com.gabrielsmm.gestrec.application.port.service.TokenServicePort;

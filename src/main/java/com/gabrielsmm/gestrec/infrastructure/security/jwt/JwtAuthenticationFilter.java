@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.adapter.security.jwt;
+package com.gabrielsmm.gestrec.infrastructure.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

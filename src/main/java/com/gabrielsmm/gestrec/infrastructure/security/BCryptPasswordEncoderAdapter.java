@@ -1,4 +1,4 @@
-package com.gabrielsmm.gestrec.adapter.security;
+package com.gabrielsmm.gestrec.infrastructure.security;
 
 import com.gabrielsmm.gestrec.application.port.service.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
