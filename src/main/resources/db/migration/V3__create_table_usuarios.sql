@@ -1,0 +1,7 @@
+CREATE TABLE usuarios (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    perfil VARCHAR(50) NOT NULL CHECK (perfil IN ('ADMIN', 'USER'))
+);
