@@ -17,8 +17,8 @@ public interface SpringDataRecursoRepo extends JpaRepository<RecursoEntity, Long
     @Query("""
         select r from RecursoEntity r
         where (:tipoRecursoId is null or r.tipoRecurso.id = :tipoRecursoId)
-          and (:nome is null or lower(r.nome) like lower(concat('%', :nome, '%')))
-          and (:localizacao is null or lower(r.localizacao) like lower(concat('%', :localizacao, '%')))
+          and (coalesce(:nome, '') = '' or lower(r.nome) like lower(concat('%', :nome, '%')))
+          and (coalesce(:localizacao, '') = '' or lower(r.localizacao) like lower(concat('%', :localizacao, '%')))
           and (:ativo is null or r.ativo = :ativo)
     """)
     Page<RecursoEntity> findComFiltrosPaginado(
