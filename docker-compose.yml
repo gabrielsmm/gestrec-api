@@ -28,6 +28,7 @@ services:
 
   db:
     image: postgres:18.1
+    container_name: gestrec-db
     environment:
       POSTGRES_DB: gestrec
       POSTGRES_USER: ${DATABASE_USERNAME}
