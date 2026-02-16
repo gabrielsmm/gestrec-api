@@ -75,7 +75,15 @@ public class JpaReservaRepositoryAdapter implements ReservaRepositoryPort {
                 paginacao.tamanhoPagina(),
                 Sort.by("dataHoraInicio").ascending()
         );
-        Page<ReservaEntity> page = repo.findComFiltrosPaginado(recursoId, dataHoraInicio, dataHoraFim, usuarioId, statusCodigo, pageable);
+
+        Page<ReservaEntity> page;
+
+        if (dataHoraInicio != null && dataHoraFim != null) {
+            page = repo.findComFiltrosComData(recursoId, usuarioId, statusCodigo, dataHoraInicio, dataHoraFim, pageable);
+        } else {
+            page = repo.findComFiltrosSemData(recursoId, usuarioId, statusCodigo, pageable);
+        }
+
         return toPagina(page);
     }
 

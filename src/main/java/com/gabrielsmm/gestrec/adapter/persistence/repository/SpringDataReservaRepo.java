@@ -38,15 +38,28 @@ public interface SpringDataReservaRepo extends JpaRepository<ReservaEntity, Long
         where (:recursoId is null or r.recurso.id = :recursoId)
           and (:usuarioId is null or r.usuario.id = :usuarioId)
           and (:status is null or r.status = :status)
-          and (:dataHoraInicio is null or :dataHoraFim is null or
-               (r.dataHoraInicio < :dataHoraFim and r.dataHoraFim > :dataHoraInicio))
     """)
-    Page<ReservaEntity> findComFiltrosPaginado(
+    Page<ReservaEntity> findComFiltrosSemData(
             @Param("recursoId") Long recursoId,
-            @Param("dataHoraInicio") LocalDateTime dataHoraInicio,
-            @Param("dataHoraFim") LocalDateTime dataHoraFim,
             @Param("usuarioId") Long usuarioId,
             @Param("status") Integer status,
+            Pageable pageable
+    );
+
+    @Query("""
+        select r from ReservaEntity r
+        where (:recursoId is null or r.recurso.id = :recursoId)
+          and (:usuarioId is null or r.usuario.id = :usuarioId)
+          and (:status is null or r.status = :status)
+          and r.dataHoraInicio < :dataHoraFim
+          and r.dataHoraFim > :dataHoraInicio
+    """)
+    Page<ReservaEntity> findComFiltrosComData(
+            @Param("recursoId") Long recursoId,
+            @Param("usuarioId") Long usuarioId,
+            @Param("status") Integer status,
+            @Param("dataHoraInicio") LocalDateTime dataHoraInicio,
+            @Param("dataHoraFim") LocalDateTime dataHoraFim,
             Pageable pageable
     );
 

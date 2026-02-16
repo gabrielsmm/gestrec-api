@@ -23,10 +23,14 @@ public class Reserva {
                     Usuario usuario,
                     LocalDateTime inicio,
                     LocalDateTime fim,
-                    ReservaStatus status) {
-        validarRecurso(recurso);
-        validarUsuario(usuario);
-        validarDatas(inicio, fim);
+                    ReservaStatus status,
+                    boolean validar) {
+
+        if (validar) {
+            validarRecurso(recurso);
+            validarUsuario(usuario);
+            validarDatas(inicio, fim);
+        }
 
         this.id = id;
         this.recurso = recurso;
@@ -41,7 +45,7 @@ public class Reserva {
                                     Usuario usuario,
                                     LocalDateTime inicio,
                                     LocalDateTime fim) {
-        return new Reserva(null, recurso, usuario, inicio, fim, ReservaStatus.ATIVA);
+        return new Reserva(null, recurso, usuario, inicio, fim, ReservaStatus.ATIVA, true);
     }
 
     // Fábrica para reconstrução de uma reserva já existente (ex: persistência)
@@ -55,7 +59,7 @@ public class Reserva {
             throw new EntidadeInvalidaException("Id é obrigatório para reconstrução da reserva");
         }
 
-        return new Reserva(id, recurso, usuario, inicio, fim, status);
+        return new Reserva(id, recurso, usuario, inicio, fim, status, false);
     }
 
     // Validações
