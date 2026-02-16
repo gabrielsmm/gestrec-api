@@ -1,45 +1,48 @@
 name: gestrec
 
 services:
+  # Reverse proxy e load balancer
   nginx:
     image: nginx:1.29
     container_name: gestrec-nginx
     ports:
-      - "8080:80"
+      - "8080:80" # Porta externa:interna - acesso via http://localhost:8080
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # :ro = read-only
     depends_on:
       - api
     networks:
       - gestrec-network
     restart: unless-stopped
 
+  # API Spring Boot (múltiplas instâncias para balanceamento)
   api:
-    build: .
+    build: . # Usa o Dockerfile na raiz do projeto
     expose:
-      - "8080"
+      - "8080" # Expõe apenas internamente (não acessível do host)
     env_file:
-      - .env
+      - .env # Carrega variáveis: SPRING_PROFILES_ACTIVE, DATABASE_URL, etc
     depends_on:
-      - db
+      - db # Aguarda o banco estar no ar (não garante que esteja pronto)
     networks:
       - gestrec-network
     restart: unless-stopped
 
+  # Banco de dados PostgreSQL
   db:
     image: postgres:18.1
     container_name: gestrec-db
     environment:
       POSTGRES_DB: gestrec
-      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_USER: ${DATABASE_USERNAME} # Variável do arquivo .env
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - postgres-data:/var/lib/postgresql
+      - postgres-data:/var/lib/postgresql # Persiste dados mesmo após container ser removido
     networks:
       - gestrec-network
 
 volumes:
-  postgres-data:
+  postgres-data: # Volume nomeado gerenciado pelo Docker
 
 networks:
-  gestrec-network:
+  gestrec-network: # Rede interna para comunicação entre containers
