@@ -1,0 +1,21 @@
+name: gestrec
+services:
+  nginx:
+    image: nginx:latest
+    container_name: gestrec-nginx
+    ports:
+      - "8080:80" # Mapeia a porta 8080 do host para a porta 80 do container
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Monta o arquivo de configuração do Nginx
+    depends_on:
+      - api
+    restart:
+      unless-stopped
+
+  api:
+    build: . # Constrói a imagem a partir do Dockerfile na raiz do projeto
+    expose:
+        - "8080" # Expõe a porta 8080 para comunicação interna entre os containers
+    deploy:
+      replicas: 3 # Define o número de réplicas para balanceamento de carga
+    restart: unless-stopped
