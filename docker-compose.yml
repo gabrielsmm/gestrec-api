@@ -15,15 +15,15 @@ services:
       - gestrec-network
     restart: unless-stopped
 
-  # API Spring Boot (múltiplas instâncias para balanceamento)
+  # API Spring Boot
   api:
     build: . # Usa o Dockerfile na raiz do projeto
     expose:
-      - "8080" # Expõe apenas internamente (não acessível do host)
+      - "8080" # Expõe apenas internamente
     env_file:
-      - .env # Carrega variáveis: SPRING_PROFILES_ACTIVE, DATABASE_URL, etc
+      - .env # Carrega variáveis
     depends_on:
-      - db # Aguarda o banco estar no ar (não garante que esteja pronto)
+      - db # Aguarda o banco estar no ar
     networks:
       - gestrec-network
     restart: unless-stopped
