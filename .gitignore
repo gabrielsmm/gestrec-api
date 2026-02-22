@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+nginx/.htpasswd
 
 ### STS ###
 .apt_generated
