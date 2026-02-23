@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GestRec API Gateway</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .container {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                padding: 40px;
+                max-width: 600px;
+                width: 100%;
+            }
+
+            h1 {
+                color: #333;
+                margin-bottom: 10px;
+                font-size: 2.5em;
+            }
+
+            .subtitle {
+                color: #666;
+                margin-bottom: 30px;
+                font-size: 1.1em;
+            }
+
+            .endpoints {
+                margin-top: 30px;
+            }
+
+            .endpoints h2 {
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 1.5em;
+            }
+
+            .endpoint-card {
+                background: #f8f9fa;
+                border-left: 4px solid #667eea;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 4px;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .endpoint-card:hover {
+                transform: translateX(5px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .endpoint-card a {
+                text-decoration: none;
+                color: #667eea;
+                font-weight: bold;
+                font-size: 1.1em;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .endpoint-card a:hover {
+                color: #764ba2;
+            }
+
+            .endpoint-card .description {
+                color: #666;
+                font-size: 0.95em;
+            }
+
+            .status {
+                display: inline-block;
+                background: #28a745;
+                color: white;
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 0.9em;
+                margin-top: 20px;
+            }
+
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                color: #999;
+                font-size: 0.9em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🚀 GestRec API</h1>
+            <p class="subtitle">Sistema Gestor de Reservas de Recursos</p>
+
+            <div class="status">✓ Online</div>
+
+            <div class="endpoints">
+                <h2>Endpoints Disponíveis</h2>
+
+                <div class="endpoint-card">
+                    <a href="/api/">/api/*</a>
+                    <p class="description">REST API principal - endpoints de recursos, reservas e usuários</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <a href="/swagger-ui/index.html">/swagger-ui/index.html</a>
+                    <p class="description">Documentação interativa da API (requer autenticação)</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <a href="/health">/health</a>
+                    <p class="description">Health check do API Gateway</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Powered by Nginx • API Gateway v1.0</p>
+            </div>
+        </div>
+    </body>
+</html>
+
