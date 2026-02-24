@@ -151,7 +151,6 @@ cd gestrec-api
 ```env
 DATABASE_USERNAME=seu_usuario
 DATABASE_PASSWORD=sua_senha
-JWT_SECRET=sua_chave_secreta_jwt_aqui
 ```
 
 3. **Subir os containers**
