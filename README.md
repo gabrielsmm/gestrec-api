@@ -41,9 +41,7 @@ A arquitetura segue os princípios da **Clean Architecture**, organizando o sist
 
 O sistema utiliza **Nginx como Reverse Proxy** para adicionar uma camada de segurança, performance e gerenciamento de requisições:
 
-```
-Cliente → Nginx (porta 80) → API Spring Boot (porta 8080) → PostgreSQL
-```
+![Diagrama Simplificado_Infra](docs/diagrama-simplificado-infra-gestrec.png)
 
 **Benefícios do Nginx:**
 - Reverse proxy e load balancing
