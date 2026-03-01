@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 .env
 nginx/.htpasswd
+*.key
 
 ### STS ###
 .apt_generated

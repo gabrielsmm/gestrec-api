@@ -6,11 +6,13 @@ services:
     image: nginx:1.29
     container_name: gestrec-nginx
     ports:
-      - "80:80" # Porta externa:interna - acesso via http://localhost
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # :ro = read-only
       - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro # Basic auth para Swagger
       - ./nginx/html:/usr/share/nginx/html:ro # Página de boas-vindas e error pages
+      - ./nginx/ssl:/etc/nginx/ssl:ro # Certificados SSL
     depends_on:
       - api
     networks:
